@@ -381,22 +381,14 @@
         function CalculatorSection({ onCalculate }) {
             const [taxis, setTaxis] = React.useState(5);
             const [duration, setDuration] = React.useState('1');
-            const [extras, setExtras] = React.useState({
-                banner: false,
-                qr: false,
-                exclusivity: false
-            });
+            const [spotsPerTaxi, setSpotsPerTaxi] = React.useState(1);
+            const [spotDuration, setSpotDuration] = React.useState('30');
 
-            const monthlyBase = taxis * PRICES.basePerTaxi;
-            const monthlyExtras = taxis * (
-                (extras.banner ? PRICES.banner : 0) +
-                (extras.qr ? PRICES.qrDynamic : 0) +
-                (extras.exclusivity ? PRICES.exclusivity : 0)
-            );
-            const monthlySubtotal = monthlyBase + monthlyExtras;
+            // Cálculo: RD$1,500 por espacio de 30 segundos por taxi/mes
+            const monthlyBase = taxis * spotsPerTaxi * PRICES.basePerTaxi;
             
             const durationMonths = parseInt(duration);
-            let total = monthlySubtotal * durationMonths;
+            let total = monthlyBase * durationMonths;
             let discount = 0;
             
             if (duration === '12') {
@@ -404,24 +396,21 @@
                 total = total - discount;
             }
 
-            const monthlyImpact = taxis * PRICES.estimatedImpactsPerTaxi;
+            const monthlyImpact = taxis * spotsPerTaxi * PRICES.estimatedImpactsPerTaxi;
 
             React.useEffect(() => {
                 if (onCalculate) {
                     onCalculate({
                         taxis,
+                        spotsPerTaxi,
                         duration: durationMonths,
-                        monthlyInvestment: monthlySubtotal,
+                        monthlyInvestment: monthlyBase,
                         totalInvestment: total,
                         discount,
                         monthlyImpact
                     });
                 }
-            }, [taxis, duration, extras, monthlySubtotal, total, discount, monthlyImpact]);
-
-            const toggleExtra = (key) => {
-                setExtras(prev => ({ ...prev, [key]: !prev[key] }));
-            };
+            }, [taxis, spotsPerTaxi, duration, monthlyBase, total, discount, monthlyImpact]);
 
             return (
                 <section id="calculadora" className="py-20 bg-dark-900">
@@ -456,6 +445,27 @@
                                     </div>
                                 </div>
 
+                                {/* Spots per Taxi */}
+                                <div className="bg-dark-800 rounded-2xl p-6 border border-gray-800">
+                                    <label className="block text-sm font-medium mb-4">
+                                        Espacios Publicitarios por Taxi: <span className="text-taxi-400 font-bold text-lg">{spotsPerTaxi}</span>
+                                    </label>
+                                    <input
+                                        type="range"
+                                        min="1"
+                                        max="10"
+                                        value={spotsPerTaxi}
+                                        onChange={(e) => setSpotsPerTaxi(parseInt(e.target.value))}
+                                        className="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-taxi-500"
+                                    />
+                                    <div className="flex justify-between text-sm text-gray-500 mt-2">
+                                        <span>1</span>
+                                        <span>5</span>
+                                        <span>10</span>
+                                    </div>
+                                    <p className="text-xs text-gray-400 mt-2">Cada espacio = 1 anuncio de 30 segundos</p>
+                                </div>
+
                                 {/* Duration Dropdown */}
                                 <div className="bg-dark-800 rounded-2xl p-6 border border-gray-800">
                                     <label className="block text-sm font-medium mb-4">Duración de Campaña</label>
@@ -471,48 +481,17 @@
                                     </select>
                                 </div>
 
-                                {/* Extras Checkboxes */}
+                                {/* Spot Duration Info */}
                                 <div className="bg-dark-800 rounded-2xl p-6 border border-gray-800">
-                                    <label className="block text-sm font-medium mb-4">Espacios Promocionales Adicionales</label>
-                                    <div className="space-y-4">
-                                        <label className="flex items-center justify-between p-4 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition">
-                                            <div className="flex items-center space-x-3">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={extras.banner}
-                                                    onChange={() => toggleExtra('banner')}
-                                                    className="w-5 h-5 text-taxi-500 rounded focus:ring-taxi-500"
-                                                />
-                                                <span>Banner Fijo</span>
-                                            </div>
-                                            <span className="text-taxi-400 font-bold">RD$200/taxi/mes</span>
-                                        </label>
-                                        
-                                        <label className="flex items-center justify-between p-4 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition">
-                                            <div className="flex items-center space-x-3">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={extras.qr}
-                                                    onChange={() => toggleExtra('qr')}
-                                                    className="w-5 h-5 text-taxi-500 rounded focus:ring-taxi-500"
-                                                />
-                                                <span>QR Dinámico</span>
-                                            </div>
-                                            <span className="text-taxi-400 font-bold">RD$300/taxi/mes</span>
-                                        </label>
-                                        
-                                        <label className="flex items-center justify-between p-4 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition">
-                                            <div className="flex items-center space-x-3">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={extras.exclusivity}
-                                                    onChange={() => toggleExtra('exclusivity')}
-                                                    className="w-5 h-5 text-taxi-500 rounded focus:ring-taxi-500"
-                                                />
-                                                <span>Exclusividad por Categoría</span>
-                                            </div>
-                                            <span className="text-taxi-400 font-bold">RD$500/taxi/mes</span>
-                                        </label>
+                                    <label className="block text-sm font-medium mb-4">Duración del Anuncio</label>
+                                    <div className="flex items-center space-x-3 p-4 bg-gray-700 rounded-lg">
+                                        <svg className="w-6 h-6 text-taxi-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <div>
+                                            <p className="font-bold">30 segundos</p>
+                                            <p className="text-xs text-gray-400">Por espacio publicitario</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -523,9 +502,17 @@
                                     <h3 className="text-2xl font-bold mb-6">Inversión Estimada</h3>
                                     
                                     <div className="space-y-4">
+                                        <div className="bg-black/10 rounded-lg p-4">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <span className="text-black/80">Precio por Espacio:</span>
+                                                <span className="font-bold">RD$ {PRICES.basePerTaxi.toLocaleString()}/mes</span>
+                                            </div>
+                                            <p className="text-xs text-black/60">Anuncio de 30 segundos × 1 espacio × {taxis} taxis</p>
+                                        </div>
+                                        
                                         <div className="flex justify-between items-center">
                                             <span className="text-black/80">Inversión Mensual:</span>
-                                            <span className="text-3xl font-bold">RD$ {monthlySubtotal.toLocaleString()}</span>
+                                            <span className="text-3xl font-bold">RD$ {monthlyBase.toLocaleString()}</span>
                                         </div>
                                         
                                         {discount > 0 && (
@@ -546,7 +533,15 @@
                                             <div className="text-center">
                                                 <p className="text-black/80 text-sm mb-1">Impactos Mensuales Estimados</p>
                                                 <p className="text-3xl font-bold">{monthlyImpact.toLocaleString()}</p>
-                                                <p className="text-xs text-black/60 mt-1">= {taxis} taxis × {PRICES.estimatedImpactsPerTaxi.toLocaleString()} impactos/taxi</p>
+                                                <p className="text-xs text-black/60 mt-1">= {taxis} taxis × {spotsPerTaxi} espacios × {PRICES.estimatedImpactsPerTaxi.toLocaleString()} impactos</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="bg-black/10 rounded-lg p-4 mt-4">
+                                            <div className="text-center">
+                                                <p className="text-black/80 text-sm mb-1">Total de Espacios</p>
+                                                <p className="text-2xl font-bold">{taxis * spotsPerTaxi} espacios publicitarios</p>
+                                                <p className="text-xs text-black/60 mt-1">= {taxis} taxis × {spotsPerTaxi} espacios/taxi</p>
                                             </div>
                                         </div>
                                     </div>
@@ -583,6 +578,7 @@
                 tieneAgencia: '',
                 necesitaDiseno: '',
                 taxis: calculatedData?.taxis || 5,
+                espaciosPorTaxi: calculatedData?.spotsPerTaxi || 1,
                 duracion: calculatedData?.duration || 1,
                 inversionMensual: calculatedData?.monthlyInvestment || 7500,
                 inversionTotal: calculatedData?.totalInvestment || 7500
@@ -595,6 +591,7 @@
                     setFormData(prev => ({
                         ...prev,
                         taxis: calculatedData.taxis,
+                        espaciosPorTaxi: calculatedData.spotsPerTaxi,
                         duracion: calculatedData.duration,
                         inversionMensual: calculatedData.monthlyInvestment,
                         inversionTotal: calculatedData.totalInvestment
@@ -781,6 +778,7 @@
 
                             {/* Hidden fields auto-filled from calculator */}
                             <input type="hidden" name="taxis" value={formData.taxis} />
+                            <input type="hidden" name="espaciosPorTaxi" value={formData.espaciosPorTaxi} />
                             <input type="hidden" name="duracion" value={formData.duracion} />
                             <input type="hidden" name="inversionMensual" value={formData.inversionMensual} />
                             <input type="hidden" name="inversionTotal" value={formData.inversionTotal} />
