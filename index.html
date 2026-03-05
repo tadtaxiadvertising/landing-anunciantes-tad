@@ -8,8 +8,7 @@
     <meta name="keywords" content="publicidad digital, taxis, República Dominicana, marketing, advertising, TAD" />
     
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; connect-src 'self' https://script.google.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;">
-    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; connect-src 'self' https://script.google.com https://script.googleusercontent.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
@@ -88,7 +87,8 @@
         // ============================================
         
         // URL ofuscada (Base64) para Google Apps Script
-        const SCRIPT_URL_B64 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyby9zL0FLZnljYnlGNVNrM1I1MWwwSjNiUDVsZ00yX01WNlFzNDdXby1hOHdRRm1lNWNCcGFOVW5sSDg1aDVaMzdQNl8yZlhaUkRWaC9leGVj";
+        // Reemplazar por la URL del Web App publicada en Google Apps Script.
+        const SCRIPT_URL_B64 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5OUJSN0otVU5IblE1WXpWcTh3WFJqRy11bjJ4dWtrcG9JZTBZUUZnTUlrSXNMUjBsN2NfR1FMeXhsZm5QT3h3NTBWUS9leGVj";
         const SCRIPT_URL = atob(SCRIPT_URL_B64);
         
         // WhatsApp (ofuscado)
@@ -674,6 +674,11 @@
                     alert('⚠️ El email corporativo no es válido');
                     return;
                 }
+
+                if (!formData.nombre || !formData.empresa || !formData.puesto || !formData.telefono || !formData.correo || !formData.ciudad || !formData.industria) {
+                    alert('⚠️ Completa todos los campos obligatorios del formulario');
+                    return;
+                }
                 
                 // Validar teléfono
                 if (!isValidPhone(formData.telefono)) {
@@ -689,20 +694,38 @@
                     sanitizedData[key] = sanitizeInput(formData[key]);
                 });
 
-                const params = new URLSearchParams(sanitizedData);
-                params.append('tipo', 'anunciante');
-                params.append('fecha', new Date().toISOString());
+                const payload = {
+                    nombre: sanitizedData.nombre,
+                    empresa: sanitizedData.empresa,
+                    puesto: sanitizedData.puesto,
+                    telefono: sanitizedData.telefono,
+                    correo: sanitizedData.correo,
+                    ciudad: sanitizedData.ciudad,
+                    industria: sanitizedData.industria,
+                    presupuesto: sanitizedData.presupuesto,
+                    tieneAgencia: sanitizedData.tieneAgencia,
+                    necesitaDiseno: sanitizedData.necesitaDiseno,
+                    taxis: sanitizedData.taxis,
+                    espaciosPorTaxi: sanitizedData.espaciosPorTaxi,
+                    duracion: sanitizedData.duracion,
+                    inversionMensual: sanitizedData.inversionMensual,
+                    inversionTotal: sanitizedData.inversionTotal,
+                    source: 'landing-anunciantes-tad'
+                };
 
-                console.log('🔒 Datos sanitizados enviados:', Object.fromEntries(params));
+                console.log('🔒 Datos sanitizados enviados:', payload);
 
                 try {
+                    // Enviamos como form-urlencoded para evitar preflight/CORS con Apps Script Web App.
+                    const formPayload = new URLSearchParams(payload);
+
                     await fetch(SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: params.toString()
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+                        body: formPayload.toString()
                     });
-                    
+
                     await new Promise(resolve => setTimeout(resolve, 500));
                     console.log('✅ Solicitud enviada exitosamente');
                     setRateLimit(); // Activar rate limiting
