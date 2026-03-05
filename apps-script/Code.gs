@@ -1,47 +1,26 @@
 /**
  * Webhook Google Apps Script para formulario #contacto de la landing de anunciantes.
  *
- * Campos esperados (exactos del frontend):
- * - nombre, empresa, puesto, telefono, correo, ciudad, industria,
- *   presupuesto, tieneAgencia, necesitaDiseno,
- *   taxis, espaciosPorTaxi, duracion, inversionMensual, inversionTotal,
- *   source (opcional)
+ * Nota de compatibilidad CORS:
+ * - Desde frontend estático, Apps Script suele funcionar mejor con
+ *   application/x-www-form-urlencoded (sin preflight).
+ * - Este endpoint acepta TANTO JSON como form-urlencoded.
  */
 
 var SHEET_NAME = 'Leads';
 var REQUIRED_FIELDS = [
-  'nombre',
-  'empresa',
-  'puesto',
-  'telefono',
-  'correo',
-  'ciudad',
-  'industria'
+  'nombre', 'empresa', 'puesto', 'telefono', 'correo', 'ciudad', 'industria'
 ];
 
 var COLUMN_HEADERS = [
-  'Timestamp',
-  'Nombre',
-  'Empresa',
-  'Puesto',
-  'Telefono',
-  'Correo',
-  'Ciudad',
-  'Industria',
-  'Presupuesto',
-  'Tiene Agencia',
-  'Necesita Diseno',
-  'Taxis',
-  'Espacios por Taxi',
-  'Duracion',
-  'Inversion Mensual',
-  'Inversion Total',
-  'Source'
+  'Timestamp', 'Nombre', 'Empresa', 'Puesto', 'Telefono', 'Correo', 'Ciudad',
+  'Industria', 'Presupuesto', 'Tiene Agencia', 'Necesita Diseno', 'Taxis',
+  'Espacios por Taxi', 'Duracion', 'Inversion Mensual', 'Inversion Total', 'Source'
 ];
 
 function doPost(e) {
   try {
-    var payload = parseJson_(e);
+    var payload = parseRequest_(e);
     validatePayload_(payload);
 
     var sheet = getLeadsSheet_();
@@ -67,16 +46,10 @@ function doPost(e) {
       clean_(payload.source || 'landing-anunciantes-tad')
     ]);
 
-    return jsonResponse_({
-      status: 'success',
-      message: 'Lead stored successfully'
-    });
+    return jsonResponse_({ status: 'success', message: 'Lead stored successfully' });
   } catch (err) {
     Logger.log('doPost error: ' + err);
-    return jsonResponse_({
-      status: 'error',
-      message: err && err.message ? err.message : 'Unexpected server error'
-    });
+    return jsonResponse_({ status: 'error', message: err && err.message ? err.message : 'Unexpected server error' });
   }
 }
 
@@ -84,25 +57,37 @@ function doGet() {
   return jsonResponse_({ status: 'success', message: 'Webhook is running' });
 }
 
-function parseJson_(e) {
-  if (!e || !e.postData || !e.postData.contents) {
+/**
+ * Soporta:
+ * 1) JSON: e.postData.contents
+ * 2) x-www-form-urlencoded: e.parameter
+ */
+function parseRequest_(e) {
+  if (!e) {
     throw new Error('Empty request body');
   }
 
-  var raw = e.postData.contents;
-  if (!raw || !raw.trim()) {
-    throw new Error('Empty request body');
-  }
-
-  try {
-    var parsed = JSON.parse(raw);
-    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
-      throw new Error('Invalid JSON payload');
+  // Primero intentamos JSON si viene contenido.
+  if (e.postData && e.postData.contents) {
+    var raw = String(e.postData.contents || '').trim();
+    if (raw) {
+      try {
+        var parsed = JSON.parse(raw);
+        if (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) {
+          return parsed;
+        }
+      } catch (error) {
+        // Si no es JSON válido, seguimos con e.parameter (form-urlencoded)
+      }
     }
-    return parsed;
-  } catch (error) {
-    throw new Error('Invalid JSON payload');
   }
+
+  // Fallback para form-urlencoded
+  if (e.parameter && Object.keys(e.parameter).length > 0) {
+    return e.parameter;
+  }
+
+  throw new Error('Invalid or empty payload');
 }
 
 function validatePayload_(payload) {

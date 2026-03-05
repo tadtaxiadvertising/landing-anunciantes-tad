@@ -65,7 +65,7 @@ printf '%s' 'https://script.google.com/macros/s/TU_DEPLOYMENT_ID/exec' | base64
 }
 ```
 
-## 6) Ejemplo fetch() (POST JSON)
+## 6) Ejemplo fetch() (POST form-urlencoded)
 
 ```javascript
 const payload = {
@@ -87,16 +87,17 @@ const payload = {
   source: 'landing-anunciantes-tad'
 };
 
-const response = await fetch('https://script.google.com/macros/s/TU_DEPLOYMENT_ID/exec', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(payload)
-});
+const body = new URLSearchParams(payload);
 
-const result = await response.json();
+await fetch('https://script.google.com/macros/s/TU_DEPLOYMENT_ID/exec', {
+  method: 'POST',
+  mode: 'no-cors',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+  body: body.toString()
+});
 ```
 
-## 7) Prueba con curl
+## 7) Prueba con curl (JSON o form-urlencoded)
 
 ```bash
 curl -X POST 'https://script.google.com/macros/s/TU_DEPLOYMENT_ID/exec' \
@@ -124,3 +125,9 @@ curl -X POST 'https://script.google.com/macros/s/TU_DEPLOYMENT_ID/exec' \
 ## 8) Estructura de columnas
 
 Revisa: `apps-script/SHEET_STRUCTURE.md`
+
+
+## Nota CORS importante
+
+Google Apps Script Web App desde un frontend estático puede bloquear respuestas CORS con `application/json`.
+Por eso el frontend usa `application/x-www-form-urlencoded` + `mode: 'no-cors'`, y el backend quedó compatible con ambos formatos.
