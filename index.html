@@ -79,7 +79,7 @@
         }
     </style>
 </head>
-<body class="bg-dark-900 text-white">
+<body class="bg-black text-white">
     <div id="root"></div>
     
     <script type="text/babel">
@@ -152,7 +152,7 @@
         // Header Component
         function Header() {
             return (
-                <header className="fixed top-0 left-0 right-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-gray-800">
+                <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-zinc-800">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between items-center py-4">
                             <div className="flex items-center space-x-2">
@@ -213,7 +213,7 @@
                         {/* Mockup Tablet */}
                         <div className="animate-fade-in-up delay-400 mt-16">
                             <div className="relative max-w-2xl mx-auto">
-                                <div className="bg-gray-800 rounded-2xl p-4 shadow-2xl border border-gray-700">
+                                <div className="bg-zinc-900 rounded-2xl p-4 shadow-2xl border border-gray-700">
                                     <div className="bg-gray-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center">
                                         <div className="text-center p-8">
                                             <div className="w-20 h-20 bg-taxi-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -236,7 +236,7 @@
         // Problem Section
         function ProblemSection() {
             return (
-                <section className="py-20 bg-dark-800">
+                <section className="py-20 bg-zinc-900">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -336,7 +336,7 @@
             ];
 
             return (
-                <section id="como-funciona" className="py-20 bg-dark-900">
+                <section id="como-funciona" className="py-20 bg-black">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -346,7 +346,7 @@
                         
                         <div className="grid md:grid-cols-3 gap-8">
                             {steps.map((step, index) => (
-                                <div key={index} className="relative bg-dark-800 rounded-2xl p-8 border border-gray-800 hover:border-taxi-500/50 transition">
+                                <div key={index} className="relative bg-zinc-900 rounded-2xl p-8 border border-zinc-800 hover:border-taxi-500/50 transition">
                                     <div className="absolute -top-6 left-8 w-12 h-12 taxi-gradient rounded-full flex items-center justify-center text-black font-bold text-xl">
                                         {step.number}
                                     </div>
@@ -413,7 +413,7 @@
             ];
 
             return (
-                <section id="beneficios" className="py-20 bg-dark-800">
+                <section id="beneficios" className="py-20 bg-zinc-900">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -423,7 +423,7 @@
                         
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {benefits.map((benefit, index) => (
-                                <div key={index} className="bg-dark-900 rounded-2xl p-6 border border-gray-800 hover:border-taxi-500/50 transition">
+                                <div key={index} className="bg-black rounded-2xl p-6 border border-zinc-800 hover:border-taxi-500/50 transition">
                                     <div className="w-14 h-14 taxi-gradient rounded-xl flex items-center justify-center text-black mb-4">
                                         {benefit.icon}
                                     </div>
@@ -473,7 +473,7 @@
             }, [taxis, spotsPerTaxi, duration, monthlyBase, total, discount, monthlyImpact]);
 
             return (
-                <section id="calculadora" className="py-20 bg-dark-900">
+                <section id="calculadora" className="py-20 bg-black">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -486,7 +486,7 @@
                             {/* Calculator Inputs */}
                             <div className="space-y-8">
                                 {/* Taxis Slider */}
-                                <div className="bg-dark-800 rounded-2xl p-6 border border-gray-800">
+                                <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
                                     <label className="block text-sm font-medium mb-4">
                                         Cantidad de Taxis: <span className="text-taxi-400 font-bold text-lg">{taxis}</span>
                                     </label>
@@ -496,7 +496,7 @@
                                         max="100"
                                         value={taxis}
                                         onChange={(e) => setTaxis(parseInt(e.target.value))}
-                                        className="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-taxi-500"
+                                        className="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-taxi-500"
                                     />
                                     <div className="flex justify-between text-sm text-gray-500 mt-2">
                                         <span>1</span>
@@ -506,7 +506,7 @@
                                 </div>
 
                                 {/* Spots per Taxi */}
-                                <div className="bg-dark-800 rounded-2xl p-6 border border-gray-800">
+                                <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
                                     <label className="block text-sm font-medium mb-4">
                                         Espacios Publicitarios por Taxi: <span className="text-taxi-400 font-bold text-lg">{spotsPerTaxi}</span>
                                     </label>
@@ -516,7 +516,7 @@
                                         max="10"
                                         value={spotsPerTaxi}
                                         onChange={(e) => setSpotsPerTaxi(parseInt(e.target.value))}
-                                        className="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-taxi-500"
+                                        className="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-taxi-500"
                                     />
                                     <div className="flex justify-between text-sm text-gray-500 mt-2">
                                         <span>1</span>
@@ -527,12 +527,12 @@
                                 </div>
 
                                 {/* Duration Dropdown */}
-                                <div className="bg-dark-800 rounded-2xl p-6 border border-gray-800">
+                                <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
                                     <label className="block text-sm font-medium mb-4">Duración de Campaña</label>
                                     <select
                                         value={duration}
                                         onChange={(e) => setDuration(e.target.value)}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-4 text-white focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-4 text-white focus:outline-none focus:border-taxi-500"
                                     >
                                         <option value="1">1 mes</option>
                                         <option value="3">3 meses</option>
@@ -542,9 +542,9 @@
                                 </div>
 
                                 {/* Spot Duration Info */}
-                                <div className="bg-dark-800 rounded-2xl p-6 border border-gray-800">
+                                <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
                                     <label className="block text-sm font-medium mb-4">Duración del Anuncio</label>
-                                    <div className="flex items-center space-x-3 p-4 bg-gray-700 rounded-lg">
+                                    <div className="flex items-center space-x-3 p-4 bg-zinc-800 rounded-lg">
                                         <svg className="w-6 h-6 text-taxi-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
@@ -716,7 +716,7 @@
 
             if (submitted) {
                 return (
-                    <section id="contacto" className="py-20 bg-dark-800">
+                    <section id="contacto" className="py-20 bg-zinc-900">
                         <div className="max-w-2xl mx-auto px-4 text-center">
                             <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -741,7 +741,7 @@
             }
 
             return (
-                <section id="contacto" className="py-20 bg-dark-800">
+                <section id="contacto" className="py-20 bg-zinc-900">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
                             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -750,7 +750,7 @@
                             <p className="text-xl text-gray-400">Completa el formulario y recibe una propuesta formal en 24 horas</p>
                         </div>
 
-                        <form onSubmit={handleSubmit} className="bg-dark-900 rounded-2xl p-8 border border-gray-800">
+                        <form onSubmit={handleSubmit} className="bg-black rounded-2xl p-8 border border-zinc-800">
                             <div className="grid md:grid-cols-2 gap-6 mb-6">
                                 <div>
                                     <label className="block text-sm font-medium mb-2">Nombre Completo *</label>
@@ -759,7 +759,7 @@
                                         required
                                         value={formData.nombre}
                                         onChange={(e) => setFormData(prev => ({ ...prev, nombre: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     />
                                 </div>
                                 <div>
@@ -769,7 +769,7 @@
                                         required
                                         value={formData.empresa}
                                         onChange={(e) => setFormData(prev => ({ ...prev, empresa: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     />
                                 </div>
                             </div>
@@ -782,7 +782,7 @@
                                         required
                                         value={formData.puesto}
                                         onChange={(e) => setFormData(prev => ({ ...prev, puesto: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     />
                                 </div>
                                 <div>
@@ -792,7 +792,7 @@
                                         required
                                         value={formData.telefono}
                                         onChange={(e) => setFormData(prev => ({ ...prev, telefono: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     />
                                 </div>
                             </div>
@@ -805,7 +805,7 @@
                                         required
                                         value={formData.correo}
                                         onChange={(e) => setFormData(prev => ({ ...prev, correo: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     />
                                 </div>
                                 <div>
@@ -814,7 +814,7 @@
                                         required
                                         value={formData.ciudad}
                                         onChange={(e) => setFormData(prev => ({ ...prev, ciudad: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     >
                                         <option value="">Selecciona una ciudad</option>
                                         <option value="Santiago">Santiago</option>
@@ -834,7 +834,7 @@
                                         required
                                         value={formData.industria}
                                         onChange={(e) => setFormData(prev => ({ ...prev, industria: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     >
                                         <option value="">Selecciona una industria</option>
                                         <option value="Restaurante">Restaurante</option>
@@ -852,7 +852,7 @@
                                     <select
                                         value={formData.presupuesto}
                                         onChange={(e) => setFormData(prev => ({ ...prev, presupuesto: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     >
                                         <option value="">Selecciona un rango</option>
                                         <option value="RD$5,000-10,000">RD$5,000-10,000</option>
@@ -876,7 +876,7 @@
                                     <select
                                         value={formData.tieneAgencia}
                                         onChange={(e) => setFormData(prev => ({ ...prev, tieneAgencia: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     >
                                         <option value="">Selecciona una opción</option>
                                         <option value="si">Sí</option>
@@ -888,7 +888,7 @@
                                     <select
                                         value={formData.necesitaDiseno}
                                         onChange={(e) => setFormData(prev => ({ ...prev, necesitaDiseno: e.target.value }))}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
                                     >
                                         <option value="">Selecciona una opción</option>
                                         <option value="si">Sí</option>
@@ -914,7 +914,7 @@
         // Footer Component
         function Footer() {
             return (
-                <footer className="bg-dark-900 border-t border-gray-800 py-12">
+                <footer className="bg-black border-t border-zinc-800 py-12">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid md:grid-cols-4 gap-8 mb-8">
                             <div>
@@ -947,7 +947,7 @@
                             </div>
                         </div>
                         
-                        <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
+                        <div className="border-t border-zinc-800 pt-8 text-center text-gray-400 text-sm">
                             <p>&copy; 2026 TAD Dominicana, S.R.L. Todos los derechos reservados.</p>
                         </div>
                     </div>
