@@ -7,6 +7,13 @@
     <meta name="description" content="Impacta miles de pasajeros diariamente con publicidad digital en tablets dentro de taxis en República Dominicana." />
     <meta name="keywords" content="publicidad digital, taxis, República Dominicana, marketing, advertising, TAD" />
     
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; connect-src 'self' https://script.google.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    
     <!-- React + Tailwind CDN -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -76,6 +83,61 @@
     <div id="root"></div>
     
     <script type="text/babel">
+        // ============================================
+        // SEGURIDAD - TAD DOMINICANA
+        // ============================================
+        
+        // URL ofuscada (Base64) para Google Apps Script
+        const SCRIPT_URL_B64 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyby9zL0FLZnljYnlGNVNrM1I1MWwwSjNiUDVsZ00yX01WNlFzNDdXby1hOHdRRm1lNWNCcGFOVW5sSDg1aDVaMzdQNl8yZlhaUkRWaC9leGVj";
+        const SCRIPT_URL = atob(SCRIPT_URL_B64);
+        
+        // WhatsApp (ofuscado)
+        const WHATSAPP_B64 = "MTg0OTUwNDM4NzI=";
+        const WHATSAPP_PHONE = atob(WHATSAPP_B64);
+        
+        // Rate Limiting - Prevenir spam
+        const RATE_LIMIT_MS = 60000; // 1 minuto entre envíos
+        const STORAGE_KEY = 'tad_anunciantes_last_submit';
+        
+        const checkRateLimit = () => {
+            const lastSubmit = localStorage.getItem(STORAGE_KEY);
+            if (lastSubmit) {
+                const elapsed = Date.now() - parseInt(lastSubmit);
+                if (elapsed < RATE_LIMIT_MS) {
+                    const waitTime = Math.ceil((RATE_LIMIT_MS - elapsed) / 1000);
+                    return { allowed: false, waitTime };
+                }
+            }
+            return { allowed: true };
+        };
+        
+        const setRateLimit = () => {
+            localStorage.setItem(STORAGE_KEY, Date.now().toString());
+        };
+        
+        // Sanitización de inputs - Prevenir XSS
+        const sanitizeInput = (input) => {
+            if (typeof input !== 'string') return input;
+            return input
+                .replace(/[<>]/g, '')
+                .replace(/javascript:/gi, '')
+                .replace(/on\w+=/gi, '')
+                .trim()
+                .substring(0, 500);
+        };
+        
+        // Validación de email
+        const isValidEmail = (email) => {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        };
+        
+        // Validación de teléfono (RD)
+        const isValidPhone = (phone) => {
+            const re = /^(\+1|1)?[23456789]\d{9}$/;
+            return re.test(phone.replace(/[\s\-\(\)]/g, ''));
+        };
+        
         // Configuración de precios
         const PRICES = {
             basePerTaxi: 1500,
@@ -84,10 +146,8 @@
             exclusivity: 500,
             estimatedImpactsPerTaxi: 3000
         };
-
-        // Google Apps Script URL (para guardar leads)
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyF5Sk3R51l0J3bP5lgM2_MV6Qs47Wo-a8wQFme5cBpaNUnlH85h5Z37P6_2fXZRDVh/exec";
-        const WHATSAPP_PHONE = "18495043872";
+        
+        // ============================================
 
         // Header Component
         function Header() {
@@ -601,14 +661,39 @@
 
             const handleSubmit = async (e) => {
                 e.preventDefault();
+                
+                // Verificar rate limiting
+                const rateCheck = checkRateLimit();
+                if (!rateCheck.allowed) {
+                    alert(`⚠️ Por favor espera ${rateCheck.waitTime} segundos antes de enviar otra solicitud`);
+                    return;
+                }
+                
+                // Validar email
+                if (!isValidEmail(formData.correo)) {
+                    alert('⚠️ El email corporativo no es válido');
+                    return;
+                }
+                
+                // Validar teléfono
+                if (!isValidPhone(formData.telefono)) {
+                    alert('⚠️ El teléfono no es válido (ej: +18495043872)');
+                    return;
+                }
+                
                 setLoading(true);
 
-                const params = new URLSearchParams();
+                // Sanitizar todos los datos
+                const sanitizedData = {};
                 Object.keys(formData).forEach(key => {
-                    params.append(key, formData[key]);
+                    sanitizedData[key] = sanitizeInput(formData[key]);
                 });
+
+                const params = new URLSearchParams(sanitizedData);
                 params.append('tipo', 'anunciante');
                 params.append('fecha', new Date().toISOString());
+
+                console.log('🔒 Datos sanitizados enviados:', Object.fromEntries(params));
 
                 try {
                     await fetch(SCRIPT_URL, {
@@ -619,9 +704,11 @@
                     });
                     
                     await new Promise(resolve => setTimeout(resolve, 500));
+                    console.log('✅ Solicitud enviada exitosamente');
+                    setRateLimit(); // Activar rate limiting
                     setSubmitted(true);
                 } catch (error) {
-                    console.error('Error:', error);
+                    console.error('❌ Error:', error);
                     alert('Error al enviar. Intenta de nuevo o contáctanos por WhatsApp.');
                 }
                 setLoading(false);
