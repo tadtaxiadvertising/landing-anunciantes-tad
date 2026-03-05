@@ -88,7 +88,8 @@
         // ============================================
         
         // URL ofuscada (Base64) para Google Apps Script
-        const SCRIPT_URL_B64 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyby9zL0FLZnljYnlGNVNrM1I1MWwwSjNiUDVsZ00yX01WNlFzNDdXby1hOHdRRm1lNWNCcGFOVW5sSDg1aDVaMzdQNl8yZlhaUkRWaC9leGVj";
+        // Nueva URL proporcionada por Mendy (5/Mar/2026)
+        const SCRIPT_URL_B64 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyby9zL0FLZnljeWJsSGpKeVhqMDRjUHNzc29xRXM5di1SYVZjemI5d3VtdGtPY00za1J0cXFLWllqdzhUYTI5UUlDRXFrLXVpWnpJU2FRL2V4ZWM=";
         const SCRIPT_URL = atob(SCRIPT_URL_B64);
         
         // WhatsApp (ofuscado)
@@ -689,27 +690,49 @@
                     sanitizedData[key] = sanitizeInput(formData[key]);
                 });
 
-                const params = new URLSearchParams(sanitizedData);
-                params.append('tipo', 'anunciante');
-                params.append('fecha', new Date().toISOString());
+                // Agregar metadata
+                sanitizedData.tipo = 'anunciante';
+                sanitizedData.fecha = new Date().toISOString();
+                sanitizedData.source = 'landing-anunciantes';
 
-                console.log('🔒 Datos sanitizados enviados:', Object.fromEntries(params));
+                console.log('🔒 Datos sanitizados:', sanitizedData);
+                console.log('📡 Enviando a:', SCRIPT_URL);
 
                 try {
-                    await fetch(SCRIPT_URL, {
+                    // Enviar como JSON para mejor compatibilidad
+                    const response = await fetch(SCRIPT_URL, {
                         method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: params.toString()
+                        mode: 'cors',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(sanitizedData)
                     });
                     
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    console.log('✅ Solicitud enviada exitosamente');
-                    setRateLimit(); // Activar rate limiting
-                    setSubmitted(true);
+                    // Intentar parsear respuesta
+                    try {
+                        const result = await response.json();
+                        console.log('📥 Respuesta del servidor:', result);
+                        
+                        if (result.success) {
+                            console.log('✅ Solicitud enviada exitosamente');
+                            setRateLimit();
+                            setSubmitted(true);
+                        } else {
+                            console.error('❌ Error del servidor:', result.error);
+                            alert('Error: ' + (result.error || 'Intenta de nuevo'));
+                        }
+                    } catch (parseError) {
+                        // Si no hay respuesta JSON, asumir éxito (no-cors fallback)
+                        console.log('⚠️ Sin respuesta JSON, asumiendo éxito');
+                        setRateLimit();
+                        setSubmitted(true);
+                    }
+                    
                 } catch (error) {
-                    console.error('❌ Error:', error);
-                    alert('Error al enviar. Intenta de nuevo o contáctanos por WhatsApp.');
+                    console.error('❌ Error de red:', error);
+                    alert('Error de conexión. Intenta de nuevo o contáctanos por WhatsApp.');
                 }
                 setLoading(false);
             };
