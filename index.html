@@ -699,40 +699,75 @@
                 console.log('📡 Enviando a:', SCRIPT_URL);
 
                 try {
-                    // Enviar como JSON para mejor compatibilidad
+                    // Crear FormData para compatibilidad con Google Apps Script
+                    const formDataObj = new FormData();
+                    
+                    // Agregar TODOS los campos (incluyendo hidden)
+                    formDataObj.append('nombre', sanitizedData.nombre);
+                    formDataObj.append('empresa', sanitizedData.empresa);
+                    formDataObj.append('puesto', sanitizedData.puesto);
+                    formDataObj.append('telefono', sanitizedData.telefono);
+                    formDataObj.append('correo', sanitizedData.correo);
+                    formDataObj.append('ciudad', sanitizedData.ciudad);
+                    formDataObj.append('industria', sanitizedData.industria);
+                    formDataObj.append('presupuesto', sanitizedData.presupuesto || '');
+                    formDataObj.append('tieneAgencia', sanitizedData.tieneAgencia || '');
+                    formDataObj.append('necesitaDiseno', sanitizedData.necesitaDiseno || '');
+                    
+                    // Campos de la calculadora (CRÍTICOS)
+                    formDataObj.append('taxis', sanitizedData.taxis);
+                    formDataObj.append('espaciosPorTaxi', sanitizedData.espaciosPorTaxi);
+                    formDataObj.append('duracion', sanitizedData.duracion);
+                    formDataObj.append('inversionMensual', sanitizedData.inversionMensual);
+                    formDataObj.append('inversionTotal', sanitizedData.inversionTotal);
+                    
+                    // Metadata
+                    formDataObj.append('tipo', 'anunciante');
+                    formDataObj.append('fecha', new Date().toISOString());
+                    formDataObj.append('source', 'landing-anunciantes');
+                    
+                    console.log('🔒 Datos a enviar:', Object.fromEntries(formDataObj));
+                    console.log('📡 URL de Google Apps Script:', SCRIPT_URL);
+
+                    // Enviar como FormData (form-urlencoded)
                     const response = await fetch(SCRIPT_URL, {
                         method: 'POST',
                         mode: 'cors',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(sanitizedData)
+                        body: formDataObj
                     });
                     
-                    // Intentar parsear respuesta
+                    // Leer respuesta como texto primero
+                    const responseText = await response.text();
+                    console.log('📥 Respuesta raw:', responseText);
+                    
+                    // Intentar parsear como JSON
                     try {
-                        const result = await response.json();
-                        console.log('📥 Respuesta del servidor:', result);
+                        const result = JSON.parse(responseText);
+                        console.log('📥 Respuesta parseada:', result);
                         
-                        if (result.success) {
+                        if (result.result === 'success' || result.success) {
                             console.log('✅ Solicitud enviada exitosamente');
                             setRateLimit();
                             setSubmitted(true);
                         } else {
-                            console.error('❌ Error del servidor:', result.error);
-                            alert('Error: ' + (result.error || 'Intenta de nuevo'));
+                            console.error('❌ Error del servidor:', result);
+                            alert('Error al enviar. Por favor intenta de nuevo o contáctanos por WhatsApp.');
                         }
                     } catch (parseError) {
-                        // Si no hay respuesta JSON, asumir éxito (no-cors fallback)
-                        console.log('⚠️ Sin respuesta JSON, asumiendo éxito');
-                        setRateLimit();
-                        setSubmitted(true);
+                        // Si no es JSON válido, verificar status HTTP
+                        if (response.status >= 200 && response.status < 300) {
+                            console.log('⚠️ Respuesta no-JSON pero status OK, asumiendo éxito');
+                            setRateLimit();
+                            setSubmitted(true);
+                        } else {
+                            console.error('❌ Status HTTP error:', response.status);
+                            alert('Error (' + response.status + '). Intenta de nuevo o contáctanos por WhatsApp.');
+                        }
                     }
                     
                 } catch (error) {
                     console.error('❌ Error de red:', error);
-                    alert('Error de conexión. Intenta de nuevo o contáctanos por WhatsApp.');
+                    alert('Error de conexión. Verifica tu internet o contáctanos por WhatsApp.');
                 }
                 setLoading(false);
             };
