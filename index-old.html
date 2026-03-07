@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TAD Dominicana - Publicidad Digital en Taxis</title>
+    <meta name="description" content="Impacta miles de pasajeros diariamente con publicidad digital en tablets dentro de taxis en República Dominicana." />
+    <meta name="keywords" content="publicidad digital, taxis, República Dominicana, marketing, advertising, TAD" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; connect-src 'self' https://script.google.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+    
+    <!-- React + Tailwind CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        taxi: {
+                            400: '#FFD700',
+                            500: '#FFC700',
+                            600: '#FFB700',
+                        },
+                        dark: {
+                            800: '#1A1A1A',
+                            900: '#0D0D0D',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%);
+        }
+        
+        .taxi-gradient {
+            background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        // ============================================
+        // SEGURIDAD - TAD DOMINICANA
+        // ============================================
+        
+        // URL ofuscada (Base64) para Google Apps Script
+        // Nueva URL proporcionada por Mendy (7/Mar/2026 03:27 UTC)
+        const SCRIPT_URL_B64 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyby9zL0FLZnljYnpvWG93R1FoQnNkOTlpVEtJajA2bFJPYkdIeW9GdlZCWGJuNzRBaFBSbDJtVlhlM0pjRWJYSWpiY0NBdXU1eEJCVy9leGVj";
+        const SCRIPT_URL = atob(SCRIPT_URL_B64);
+        
+        // WhatsApp (ofuscado)
+        const WHATSAPP_B64 = "MTg0OTUwNDM4NzI=";
+        const WHATSAPP_PHONE = atob(WHATSAPP_B64);
+        
+        // Rate Limiting - Prevenir spam
+        const RATE_LIMIT_MS = 60000; // 1 minuto entre envíos
+        const STORAGE_KEY = 'tad_anunciantes_last_submit';
+        
+        const checkRateLimit = () => {
+            const lastSubmit = localStorage.getItem(STORAGE_KEY);
+            if (lastSubmit) {
+                const elapsed = Date.now() - parseInt(lastSubmit);
+                if (elapsed < RATE_LIMIT_MS) {
+                    const waitTime = Math.ceil((RATE_LIMIT_MS - elapsed) / 1000);
+                    return { allowed: false, waitTime };
+                }
+            }
+            return { allowed: true };
+        };
+        
+        const setRateLimit = () => {
+            localStorage.setItem(STORAGE_KEY, Date.now().toString());
+        };
+        
+        // Sanitización de inputs - Prevenir XSS
+        const sanitizeInput = (input) => {
+            if (typeof input !== 'string') return input;
+            return input
+                .replace(/[<>]/g, '')
+                .replace(/javascript:/gi, '')
+                .replace(/on\w+=/gi, '')
+                .trim()
+                .substring(0, 500);
+        };
+        
+        // Validación de email
+        const isValidEmail = (email) => {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        };
+        
+        // Validación de teléfono (RD)
+        const isValidPhone = (phone) => {
+            const re = /^(\+1|1)?[23456789]\d{9}$/;
+            return re.test(phone.replace(/[\s\-\(\)]/g, ''));
+        };
+        
+        // Configuración de precios
+        const PRICES = {
+            basePerTaxi: 1500,
+            banner: 200,
+            qrDynamic: 300,
+            exclusivity: 500,
+            estimatedImpactsPerTaxi: 3000
+        };
+        
+        // ============================================
+
+        // Header Component
+        function Header() {
+            return (
+                <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-b border-zinc-800">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between items-center py-4">
+                            <div className="flex items-center space-x-2">
+                                <svg viewBox="0 0 200 60" className="w-32 h-auto">
+                                    <rect x="35" y="15" width="45" height="30" rx="5" stroke="#FFD700" strokeWidth="4"/>
+                                    <polygon points="50,22 68,30 50,38" fill="#FFD700"/>
+                                    <text x="90" y="40" fill="#FFD700" fontFamily="sans-serif" fontSize="28" fontWeight="bold">TAD</text>
+                                </svg>
+                            </div>
+                            <nav className="hidden md:flex space-x-8">
+                                <a href="#como-funciona" className="text-gray-300 hover:text-taxi-400 transition">Cómo Funciona</a>
+                                <a href="#beneficios" className="text-gray-300 hover:text-taxi-400 transition">Beneficios</a>
+                                <a href="#calculadora" className="text-gray-300 hover:text-taxi-400 transition">Calculadora</a>
+                            </nav>
+                            <a href="#contacto" className="bg-taxi-500 hover:bg-taxi-600 text-black font-bold py-2 px-6 rounded-full transition transform hover:scale-105">
+                                Solicitar Cotización
+                            </a>
+                        </div>
+                    </div>
+                </header>
+            );
+        }
+
+        // Hero Section
+        function HeroSection() {
+            return (
+                <section className="relative min-h-screen flex items-center justify-center gradient-bg pt-20">
+                    <div className="absolute inset-0 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-dark-900"></div>
+                    </div>
+                    
+                    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+                        <div className="animate-fade-in-up">
+                            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                                Publicidad Digital
+                                <br />
+                                <span className="text-taxi-400">Dentro de Taxis</span>
+                                <br />
+                                en República Dominicana
+                            </h1>
+                        </div>
+                        
+                        <div className="animate-fade-in-up delay-200">
+                            <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto">
+                                Impacta miles de pasajeros diariamente mientras se trasladan por la ciudad.
+                            </p>
+                        </div>
+                        
+                        <div className="animate-fade-in-up delay-300">
+                            <a 
+                                href="#calculadora" 
+                                className="inline-block bg-taxi-500 hover:bg-taxi-600 text-black font-bold py-4 px-12 rounded-full text-lg transition transform hover:scale-105 shadow-lg shadow-taxi-500/25"
+                            >
+                                Solicitar Cotización
+                            </a>
+                        </div>
+                        
+                        {/* Mockup Tablet */}
+                        <div className="animate-fade-in-up delay-400 mt-16">
+                            <div className="relative max-w-2xl mx-auto">
+                                <div className="bg-zinc-900 rounded-2xl p-4 shadow-2xl border border-gray-700">
+                                    <div className="bg-gray-900 rounded-xl overflow-hidden aspect-video flex items-center justify-center">
+                                        <div className="text-center p-8">
+                                            <div className="w-20 h-20 bg-taxi-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </div>
+                                            <p className="text-gray-400">Tablet 10" HD</p>
+                                            <p className="text-sm text-gray-500 mt-2">Contenido publicitario en movimiento</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Problem Section
+        function ProblemSection() {
+            return (
+                <section className="py-20 bg-zinc-900">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                                La Publicidad Tradicional <span className="text-taxi-400">Ya No Conecta</span>
+                            </h2>
+                        </div>
+                        
+                        <div className="grid md:grid-cols-2 gap-12 items-center">
+                            <div className="space-y-6">
+                                <div className="flex items-start space-x-4">
+                                    <div className="flex-shrink-0 w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                                        <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-bold mb-2">Saturación Digital</h3>
+                                        <p className="text-gray-400">Los usuarios ven miles de anuncios diarios en redes sociales.</p>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex items-start space-x-4">
+                                    <div className="flex-shrink-0 w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                                        <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-bold mb-2">Alto Costo</h3>
+                                        <p className="text-gray-400">Las campañas digitales tradicionales son cada vez más costosas.</p>
+                                    </div>
+                                </div>
+                                
+                                <div className="flex items-start space-x-4">
+                                    <div className="flex-shrink-0 w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center">
+                                        <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-bold mb-2">Público Distraído</h3>
+                                        <p className="text-gray-400">Scroll infinito = menos atención a tu mensaje.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-gradient-to-br from-taxi-500/20 to-transparent rounded-2xl p-8 border border-taxi-500/30">
+                                <h3 className="text-2xl font-bold mb-4 text-taxi-400">✨ Con TAD es Diferente</h3>
+                                <p className="text-lg text-gray-300 mb-4">
+                                    Tu anuncio se muestra frente a un público <strong>cautivo</strong> durante <strong>10-30 minutos por trayecto</strong>.
+                                </p>
+                                <ul className="space-y-3">
+                                    <li className="flex items-center space-x-3">
+                                        <svg className="w-5 h-5 text-taxi-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                                        </svg>
+                                        <span>Atención garantizada</span>
+                                    </li>
+                                    <li className="flex items-center space-x-3">
+                                        <svg className="w-5 h-5 text-taxi-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                                        </svg>
+                                        <span>Sin competencia de otros anuncios</span>
+                                    </li>
+                                    <li className="flex items-center space-x-3">
+                                        <svg className="w-5 h-5 text-taxi-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                                        </svg>
+                                        <span>Mensaje completo, no ignorado</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // How It Works Section
+        function HowItWorksSection() {
+            const steps = [
+                {
+                    number: '1',
+                    title: 'Instalamos Tablets',
+                    description: 'Colocamos tablets de 10" en taxis afiliados estratégicamente ubicados.'
+                },
+                {
+                    number: '2',
+                    title: 'Tu Anuncio se Reproduce',
+                    description: 'El contenido publicitario se muestra durante los trayectos de los pasajeros.'
+                },
+                {
+                    number: '3',
+                    title: 'Recibes Reportes',
+                    description: 'Obtienes métricas mensuales de visualizaciones e impacto de campaña.'
+                }
+            ];
+
+            return (
+                <section id="como-funciona" className="py-20 bg-black">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                                ¿Cómo <span className="text-taxi-400">Funciona</span>?
+                            </h2>
+                        </div>
+                        
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {steps.map((step, index) => (
+                                <div key={index} className="relative bg-zinc-900 rounded-2xl p-8 border border-zinc-800 hover:border-taxi-500/50 transition">
+                                    <div className="absolute -top-6 left-8 w-12 h-12 taxi-gradient rounded-full flex items-center justify-center text-black font-bold text-xl">
+                                        {step.number}
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-4 mt-4">{step.title}</h3>
+                                    <p className="text-gray-400">{step.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Benefits Section
+        function BenefitsSection() {
+            const benefits = [
+                {
+                    icon: (
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    ),
+                    title: 'Público Cautivo',
+                    description: 'Pasajeros sin distracciones durante 10-30 minutos por trayecto.'
+                },
+                {
+                    icon: (
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    ),
+                    title: 'Cobertura Estratégica',
+                    description: 'Taxis en las zonas de mayor tráfico de República Dominicana.'
+                },
+                {
+                    icon: (
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    ),
+                    title: 'Costo Accesible',
+                    description: 'Desde RD$1,500 por taxi/mes. Sin contratos a largo plazo.'
+                },
+                {
+                    icon: (
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    ),
+                    title: 'Métricas Reales',
+                    description: 'Reportes mensuales de visualizaciones e impacto de campaña.'
+                },
+                {
+                    icon: (
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                        </svg>
+                    ),
+                    title: 'Integración con QR',
+                    description: 'Códigos QR dinámicos para redirigir tráfico a tu sitio web.'
+                }
+            ];
+
+            return (
+                <section id="beneficios" className="py-20 bg-zinc-900">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                                Beneficios <span className="text-taxi-400">Clave</span>
+                            </h2>
+                        </div>
+                        
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {benefits.map((benefit, index) => (
+                                <div key={index} className="bg-black rounded-2xl p-6 border border-zinc-800 hover:border-taxi-500/50 transition">
+                                    <div className="w-14 h-14 taxi-gradient rounded-xl flex items-center justify-center text-black mb-4">
+                                        {benefit.icon}
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
+                                    <p className="text-gray-400">{benefit.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Calculator Section
+        function CalculatorSection({ onCalculate }) {
+            const [taxis, setTaxis] = React.useState(5);
+            const [duration, setDuration] = React.useState('1');
+            const [spotsPerTaxi, setSpotsPerTaxi] = React.useState(1);
+            const [spotDuration, setSpotDuration] = React.useState('30');
+
+            // Cálculo: RD$1,500 por espacio de 30 segundos por taxi/mes
+            const monthlyBase = taxis * spotsPerTaxi * PRICES.basePerTaxi;
+            
+            const durationMonths = parseInt(duration);
+            let total = monthlyBase * durationMonths;
+            let discount = 0;
+            
+            if (duration === '12') {
+                discount = total * 0.10;
+                total = total - discount;
+            }
+
+            const monthlyImpact = taxis * spotsPerTaxi * PRICES.estimatedImpactsPerTaxi;
+
+            React.useEffect(() => {
+                if (onCalculate) {
+                    onCalculate({
+                        taxis,
+                        spotsPerTaxi,
+                        duration: durationMonths,
+                        monthlyInvestment: monthlyBase,
+                        totalInvestment: total,
+                        discount,
+                        monthlyImpact
+                    });
+                }
+            }, [taxis, spotsPerTaxi, duration, monthlyBase, total, discount, monthlyImpact]);
+
+            return (
+                <section id="calculadora" className="py-20 bg-black">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                                Calcula Tu <span className="text-taxi-400">Inversión</span>
+                            </h2>
+                            <p className="text-xl text-gray-400">Personaliza tu campaña y obtén un estimado instantáneo</p>
+                        </div>
+                        
+                        <div className="grid lg:grid-cols-2 gap-12">
+                            {/* Calculator Inputs */}
+                            <div className="space-y-8">
+                                {/* Taxis Slider */}
+                                <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+                                    <label className="block text-sm font-medium mb-4">
+                                        Cantidad de Taxis: <span className="text-taxi-400 font-bold text-lg">{taxis}</span>
+                                    </label>
+                                    <input
+                                        type="range"
+                                        min="1"
+                                        max="100"
+                                        value={taxis}
+                                        onChange={(e) => setTaxis(parseInt(e.target.value))}
+                                        className="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-taxi-500"
+                                    />
+                                    <div className="flex justify-between text-sm text-gray-500 mt-2">
+                                        <span>1</span>
+                                        <span>50</span>
+                                        <span>100</span>
+                                    </div>
+                                </div>
+
+                                {/* Spots per Taxi */}
+                                <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+                                    <label className="block text-sm font-medium mb-4">
+                                        Espacios Publicitarios por Taxi: <span className="text-taxi-400 font-bold text-lg">{spotsPerTaxi}</span>
+                                    </label>
+                                    <input
+                                        type="range"
+                                        min="1"
+                                        max="10"
+                                        value={spotsPerTaxi}
+                                        onChange={(e) => setSpotsPerTaxi(parseInt(e.target.value))}
+                                        className="w-full h-3 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-taxi-500"
+                                    />
+                                    <div className="flex justify-between text-sm text-gray-500 mt-2">
+                                        <span>1</span>
+                                        <span>5</span>
+                                        <span>10</span>
+                                    </div>
+                                    <p className="text-xs text-gray-400 mt-2">Cada espacio = 1 anuncio de 30 segundos</p>
+                                </div>
+
+                                {/* Duration Dropdown */}
+                                <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+                                    <label className="block text-sm font-medium mb-4">Duración de Campaña</label>
+                                    <select
+                                        value={duration}
+                                        onChange={(e) => setDuration(e.target.value)}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-4 text-white focus:outline-none focus:border-taxi-500"
+                                    >
+                                        <option value="1">1 mes</option>
+                                        <option value="3">3 meses</option>
+                                        <option value="6">6 meses</option>
+                                        <option value="12">12 meses (10% descuento)</option>
+                                    </select>
+                                </div>
+
+                                {/* Spot Duration Info */}
+                                <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800">
+                                    <label className="block text-sm font-medium mb-4">Duración del Anuncio</label>
+                                    <div className="flex items-center space-x-3 p-4 bg-zinc-800 rounded-lg">
+                                        <svg className="w-6 h-6 text-taxi-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <div>
+                                            <p className="font-bold">30 segundos</p>
+                                            <p className="text-xs text-gray-400">Por espacio publicitario</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Results */}
+                            <div className="space-y-6">
+                                <div className="bg-gradient-to-br from-taxi-500 to-taxi-600 rounded-2xl p-8 text-black">
+                                    <h3 className="text-2xl font-bold mb-6">Inversión Estimada</h3>
+                                    
+                                    <div className="space-y-4">
+                                        <div className="bg-black/10 rounded-lg p-4">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <span className="text-black/80">Precio por Espacio:</span>
+                                                <span className="font-bold">RD$ {PRICES.basePerTaxi.toLocaleString()}/mes</span>
+                                            </div>
+                                            <p className="text-xs text-black/60">Anuncio de 30 segundos × 1 espacio × {taxis} taxis</p>
+                                        </div>
+                                        
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-black/80">Inversión Mensual:</span>
+                                            <span className="text-3xl font-bold">RD$ {monthlyBase.toLocaleString()}</span>
+                                        </div>
+                                        
+                                        {discount > 0 && (
+                                            <div className="flex justify-between items-center text-green-800">
+                                                <span>Descuento (12 meses):</span>
+                                                <span className="font-bold">-RD$ {discount.toLocaleString()}</span>
+                                            </div>
+                                        )}
+                                        
+                                        <div className="border-t border-black/20 pt-4">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-lg">Inversión Total ({durationMonths} {durationMonths === 1 ? 'mes' : 'meses'}):</span>
+                                                <span className="text-4xl font-bold">RD$ {total.toLocaleString()}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="bg-black/10 rounded-lg p-4 mt-6">
+                                            <div className="text-center">
+                                                <p className="text-black/80 text-sm mb-1">Impactos Mensuales Estimados</p>
+                                                <p className="text-3xl font-bold">{monthlyImpact.toLocaleString()}</p>
+                                                <p className="text-xs text-black/60 mt-1">= {taxis} taxis × {spotsPerTaxi} espacios × {PRICES.estimatedImpactsPerTaxi.toLocaleString()} impactos</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="bg-black/10 rounded-lg p-4 mt-4">
+                                            <div className="text-center">
+                                                <p className="text-black/80 text-sm mb-1">Total de Espacios</p>
+                                                <p className="text-2xl font-bold">{taxis * spotsPerTaxi} espacios publicitarios</p>
+                                                <p className="text-xs text-black/60 mt-1">= {taxis} taxis × {spotsPerTaxi} espacios/taxi</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <a
+                                    href="#contacto"
+                                    className="block w-full bg-white hover:bg-gray-100 text-black font-bold py-4 rounded-full text-center text-lg transition transform hover:scale-105"
+                                >
+                                    Solicitar Propuesta Formal
+                                </a>
+                                
+                                <p className="text-center text-gray-400 text-sm">
+                                    Video promocional incluido en precio base
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Contact Form Section
+        function ContactFormSection({ calculatedData }) {
+            const [formData, setFormData] = React.useState({
+                nombre: '',
+                empresa: '',
+                puesto: '',
+                telefono: '',
+                correo: '',
+                ciudad: '',
+                industria: '',
+                presupuesto: '',
+                tieneAgencia: '',
+                necesitaDiseno: '',
+                taxis: calculatedData?.taxis || 5,
+                espaciosPorTaxi: calculatedData?.spotsPerTaxi || 1,
+                duracion: calculatedData?.duration || 1,
+                inversionMensual: calculatedData?.monthlyInvestment || 7500,
+                inversionTotal: calculatedData?.totalInvestment || 7500
+            });
+            const [loading, setLoading] = React.useState(false);
+            const [submitted, setSubmitted] = React.useState(false);
+
+            React.useEffect(() => {
+                if (calculatedData) {
+                    setFormData(prev => ({
+                        ...prev,
+                        taxis: calculatedData.taxis,
+                        espaciosPorTaxi: calculatedData.spotsPerTaxi,
+                        duracion: calculatedData.duration,
+                        inversionMensual: calculatedData.monthlyInvestment,
+                        inversionTotal: calculatedData.totalInvestment
+                    }));
+                }
+            }, [calculatedData]);
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                
+                // Verificar rate limiting
+                const rateCheck = checkRateLimit();
+                if (!rateCheck.allowed) {
+                    alert(`⚠️ Por favor espera ${rateCheck.waitTime} segundos antes de enviar otra solicitud`);
+                    return;
+                }
+                
+                // Validar email
+                if (!isValidEmail(formData.correo)) {
+                    alert('⚠️ El email corporativo no es válido');
+                    return;
+                }
+                
+                // Validar teléfono
+                if (!isValidPhone(formData.telefono)) {
+                    alert('⚠️ El teléfono no es válido (ej: +18495043872)');
+                    return;
+                }
+                
+                setLoading(true);
+
+                // Sanitizar todos los datos
+                const sanitizedData = {};
+                Object.keys(formData).forEach(key => {
+                    sanitizedData[key] = sanitizeInput(formData[key]);
+                });
+
+                // Agregar metadata
+                sanitizedData.tipo = 'anunciante';
+                sanitizedData.fecha = new Date().toISOString();
+                sanitizedData.source = 'landing-anunciantes';
+
+                console.log('🔒 Datos sanitizados:', sanitizedData);
+                console.log('📡 Enviando a:', SCRIPT_URL);
+
+                try {
+                    // Crear FormData para compatibilidad con Google Apps Script
+                    const formDataObj = new FormData();
+                    
+                    // Agregar TODOS los campos (incluyendo hidden)
+                    formDataObj.append('nombre', sanitizedData.nombre);
+                    formDataObj.append('empresa', sanitizedData.empresa);
+                    formDataObj.append('puesto', sanitizedData.puesto);
+                    formDataObj.append('telefono', sanitizedData.telefono);
+                    formDataObj.append('correo', sanitizedData.correo);
+                    formDataObj.append('ciudad', sanitizedData.ciudad);
+                    formDataObj.append('industria', sanitizedData.industria);
+                    formDataObj.append('presupuesto', sanitizedData.presupuesto || '');
+                    formDataObj.append('tieneAgencia', sanitizedData.tieneAgencia || '');
+                    formDataObj.append('necesitaDiseno', sanitizedData.necesitaDiseno || '');
+                    
+                    // Campos de la calculadora (CRÍTICOS)
+                    formDataObj.append('taxis', sanitizedData.taxis);
+                    formDataObj.append('espaciosPorTaxi', sanitizedData.espaciosPorTaxi);
+                    formDataObj.append('duracion', sanitizedData.duracion);
+                    formDataObj.append('inversionMensual', sanitizedData.inversionMensual);
+                    formDataObj.append('inversionTotal', sanitizedData.inversionTotal);
+                    
+                    // Metadata
+                    formDataObj.append('tipo', 'anunciante');
+                    formDataObj.append('fecha', new Date().toISOString());
+                    formDataObj.append('source', 'landing-anunciantes');
+                    
+                    console.log('🔒 Datos a enviar:', Object.fromEntries(formDataObj));
+                    console.log('📡 URL de Google Apps Script:', SCRIPT_URL);
+
+                    // Convertir FormData a URLSearchParams para mejor compatibilidad con GAS
+                    const params = new URLSearchParams();
+                    for (let [key, value] of formDataObj.entries()) {
+                        params.append(key, value);
+                    }
+                    
+                    console.log('📤 Enviando como URLSearchParams...');
+                    console.log('Params:', params.toString());
+                    
+                    // Enviar a Google Apps Script
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: params
+                    });
+                    
+                    // Con no-cors, la respuesta es "opaque" (no podemos leer el cuerpo)
+                    // Pero si llegamos aquí sin error, asumimos que se envió
+                    console.log('📥 Respuesta recibida (opaque - no-cors)');
+                    console.log('✅ Asumiendo envío exitoso');
+                    
+                    // Marcar como enviado
+                    setRateLimit();
+                    setSubmitted(true);
+                    
+                } catch (error) {
+                    console.error('❌ Error de red:', error);
+                    alert('Error de conexión. Verifica tu internet o contáctanos por WhatsApp.');
+                }
+                setLoading(false);
+            };
+
+            if (submitted) {
+                return (
+                    <section id="contacto" className="py-20 bg-zinc-900">
+                        <div className="max-w-2xl mx-auto px-4 text-center">
+                            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <h2 className="text-3xl font-bold mb-4">¡Solicitud Enviada!</h2>
+                            <p className="text-gray-400 mb-8">
+                                Nos pondremos en contacto contigo en las próximas 24 horas.
+                            </p>
+                            <a
+                                href={`https://wa.me/${WHATSAPP_PHONE}?text=Hola,%20acabo%20de%20enviar%20mi%20solicitud%20de%20publicidad%20en%20TAD`}
+                                className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full transition"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Contactar por WhatsApp →
+                            </a>
+                        </div>
+                    </section>
+                );
+            }
+
+            return (
+                <section id="contacto" className="py-20 bg-zinc-900">
+                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                                Solicitar <span className="text-taxi-400">Propuesta</span>
+                            </h2>
+                            <p className="text-xl text-gray-400">Completa el formulario y recibe una propuesta formal en 24 horas</p>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="bg-black rounded-2xl p-8 border border-zinc-800">
+                            <div className="grid md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">Nombre Completo *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formData.nombre}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, nombre: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">Empresa *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formData.empresa}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, empresa: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">Puesto en la Empresa *</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={formData.puesto}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, puesto: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">Teléfono (WhatsApp) *</label>
+                                    <input
+                                        type="tel"
+                                        required
+                                        value={formData.telefono}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, telefono: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">Correo Corporativo *</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        value={formData.correo}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, correo: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">Ciudad *</label>
+                                    <select
+                                        required
+                                        value={formData.ciudad}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, ciudad: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    >
+                                        <option value="">Selecciona una ciudad</option>
+                                        <option value="Santiago">Santiago</option>
+                                        <option value="Santo Domingo">Santo Domingo</option>
+                                        <option value="Punta Cana">Punta Cana</option>
+                                        <option value="La Romana">La Romana</option>
+                                        <option value="Puerto Plata">Puerto Plata</option>
+                                        <option value="Otra">Otra</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">Industria / Sector *</label>
+                                    <select
+                                        required
+                                        value={formData.industria}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, industria: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    >
+                                        <option value="">Selecciona una industria</option>
+                                        <option value="Restaurante">Restaurante</option>
+                                        <option value="Retail">Retail</option>
+                                        <option value="Servicios Financieros">Servicios Financieros</option>
+                                        <option value="Salud">Salud</option>
+                                        <option value="Educación">Educación</option>
+                                        <option value="Entretenimiento">Entretenimiento</option>
+                                        <option value="Telecomunicaciones">Telecomunicaciones</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">Presupuesto Mensual Estimado</label>
+                                    <select
+                                        value={formData.presupuesto}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, presupuesto: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    >
+                                        <option value="">Selecciona un rango</option>
+                                        <option value="RD$5,000-10,000">RD$5,000-10,000</option>
+                                        <option value="RD$10,000-25,000">RD$10,000-25,000</option>
+                                        <option value="RD$25,000-50,000">RD$25,000-50,000</option>
+                                        <option value="RD$50,000+">RD$50,000+</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Hidden fields auto-filled from calculator */}
+                            <input type="hidden" name="taxis" value={formData.taxis} />
+                            <input type="hidden" name="espaciosPorTaxi" value={formData.espaciosPorTaxi} />
+                            <input type="hidden" name="duracion" value={formData.duracion} />
+                            <input type="hidden" name="inversionMensual" value={formData.inversionMensual} />
+                            <input type="hidden" name="inversionTotal" value={formData.inversionTotal} />
+
+                            <div className="grid md:grid-cols-2 gap-6 mb-8">
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">¿Tienes Agencia de Marketing?</label>
+                                    <select
+                                        value={formData.tieneAgencia}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, tieneAgencia: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    >
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="si">Sí</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">¿Necesitas Diseño del Anuncio?</label>
+                                    <select
+                                        value={formData.necesitaDiseno}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, necesitaDiseno: e.target.value }))}
+                                        className="w-full bg-zinc-800 border border-zinc-700 rounded-lg p-3 focus:outline-none focus:border-taxi-500"
+                                    >
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="si">Sí</option>
+                                        <option value="no">No</option>
+                                        <option value="talvez">Tal vez</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full bg-taxi-500 hover:bg-taxi-600 text-black font-bold py-4 rounded-full text-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {loading ? 'Enviando...' : 'Enviar Solicitud'}
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            );
+        }
+
+        // Footer Component
+        function Footer() {
+            return (
+                <footer className="bg-black border-t border-zinc-800 py-12">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid md:grid-cols-4 gap-8 mb-8">
+                            <div>
+                                <svg viewBox="0 0 200 60" className="w-32 h-auto mb-4">
+                                    <rect x="35" y="15" width="45" height="30" rx="5" stroke="#FFD700" strokeWidth="4"/>
+                                    <polygon points="50,22 68,30 50,38" fill="#FFD700"/>
+                                    <text x="90" y="40" fill="#FFD700" fontFamily="sans-serif" fontSize="28" fontWeight="bold">TAD</text>
+                                </svg>
+                                <p className="text-gray-400 text-sm">
+                                    Publicidad digital en taxis en República Dominicana.
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h4 className="font-bold mb-4">Contacto</h4>
+                                <p className="text-gray-400 text-sm mb-2">Email: tad.taxiadvertising@gmail.com</p>
+                                <p className="text-gray-400 text-sm">WhatsApp: +1 (849) 504-3872</p>
+                            </div>
+                            
+                            <div>
+                                <h4 className="font-bold mb-4">Legal</h4>
+                                <a href="#" className="block text-gray-400 text-sm hover:text-taxi-400 transition mb-2">Términos y Condiciones</a>
+                                <a href="#" className="block text-gray-400 text-sm hover:text-taxi-400 transition">Política de Privacidad</a>
+                            </div>
+                            
+                            <div>
+                                <h4 className="font-bold mb-4">Empresa</h4>
+                                <p className="text-gray-400 text-sm">TAD Dominicana, S.R.L.</p>
+                                <p className="text-gray-400 text-sm">República Dominicana</p>
+                            </div>
+                        </div>
+                        
+                        <div className="border-t border-zinc-800 pt-8 text-center text-gray-400 text-sm">
+                            <p>&copy; 2026 TAD Dominicana, S.R.L. Todos los derechos reservados.</p>
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        // WhatsApp Float Button
+        function WhatsAppButton() {
+            return (
+                <a
+                    href={`https://wa.me/${WHATSAPP_PHONE}?text=Hola,%20estoy%20interesado%20en%20anunciarme%20en%20TAD`}
+                    className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition transform hover:scale-110"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                </a>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [calculatedData, setCalculatedData] = React.useState(null);
+
+            const handleCalculate = (data) => {
+                setCalculatedData(data);
+            };
+
+            return (
+                                <div className="min-h-screen">
+                    <Header />
+                    <HeroSection />
+                    <ProblemSection />
+                    <HowItWorksSection />
+                    <BenefitsSection />
+                    <CalculatorSection onCalculate={handleCalculate} />
+                    <ContactFormSection calculatedData={calculatedData} />
+                    <Footer />
+                    <WhatsAppButton />
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
