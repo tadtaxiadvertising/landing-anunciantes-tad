@@ -729,15 +729,23 @@
                     console.log('🔒 Datos a enviar:', Object.fromEntries(formDataObj));
                     console.log('📡 URL de Google Apps Script:', SCRIPT_URL);
 
-                    // Enviar como FormData (form-urlencoded)
-                    // Usamos no-cors porque Google Apps Script no envía CORS headers correctamente
+                    // Convertir FormData a URLSearchParams para mejor compatibilidad con GAS
+                    const params = new URLSearchParams();
+                    for (let [key, value] of formDataObj.entries()) {
+                        params.append(key, value);
+                    }
+                    
+                    console.log('📤 Enviando como URLSearchParams...');
+                    console.log('Params:', params.toString());
+                    
+                    // Enviar a Google Apps Script
                     const response = await fetch(SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
-                        body: formDataObj,
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
-                        }
+                        },
+                        body: params
                     });
                     
                     // Con no-cors, la respuesta es "opaque" (no podemos leer el cuerpo)

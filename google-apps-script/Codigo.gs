@@ -41,10 +41,18 @@ var COLUMN_HEADERS = [
 
 function doPost(e) {
   try {
+    Logger.log("========================================");
+    Logger.log("🚀 POST recibido - TAD Dominicana v2.0");
+    Logger.log("========================================");
+    Logger.log("Tipo de contenido: " + (e.postData ? e.postData.type : "N/A"));
+    Logger.log("Longitud de datos: " + (e.postData && e.postData.length ? e.postData.length : "N/A"));
+    
     // ============================================
     // PARSEAR DATOS (Soporta JSON y FormData)
     // ============================================
     var payload = parsePayload(e);
+    
+    Logger.log("📋 Payload parseado: " + JSON.stringify(payload));
     
     // ============================================
     // VALIDAR DATOS
@@ -114,24 +122,39 @@ function parsePayload(e) {
   var data = {};
   
   // ============================================
-  // INTENTO 1: JSON (e.postData.contents)
+  // VALIDAR que e existe
   // ============================================
-  if (e.postData && e.postData.contents) {
-    try {
-      data = JSON.parse(e.postData.contents);
-      Logger.log("📦 Datos parseados como JSON");
-      return normalizePayloadKeys(data);
-    } catch (jsonError) {
-      Logger.log("⚠️ No es JSON válido, intentando FormData");
-    }
+  if (!e) {
+    Logger.log("❌ Objeto evento 'e' es undefined");
+    throw new Error("No se recibieron datos del formulario");
+  }
+  
+  Logger.log("🔍 Analizando estructura del evento...");
+  Logger.log("e.postData existe: " + (e.postData ? "Sí" : "No"));
+  Logger.log("e.parameter existe: " + (e.parameter ? "Sí" : "No"));
+  Logger.log("e.postData.contents existe: " + (e.postData && e.postData.contents ? "Sí" : "No"));
+  
+  // ============================================
+  // INTENTO 1: FormData (e.parameter) - MÁS COMÚN
+  // ============================================
+  if (e.parameter) {
+    Logger.log("📦 Datos recibidos como FormData (e.parameter)");
+    Logger.log("Keys disponibles: " + Object.keys(e.parameter).join(", "));
+    return normalizePayloadKeys(e.parameter);
   }
   
   // ============================================
-  // INTENTO 2: FormData (e.parameter)
+  // INTENTO 2: JSON (e.postData.contents)
   // ============================================
-  if (e.parameter) {
-    Logger.log("📦 Datos recibidos como FormData");
-    return normalizePayloadKeys(e.parameter);
+  if (e.postData && e.postData.contents) {
+    try {
+      Logger.log("📦 Intentando parsear JSON...");
+      data = JSON.parse(e.postData.contents);
+      Logger.log("✅ Datos parseados como JSON");
+      return normalizePayloadKeys(data);
+    } catch (jsonError) {
+      Logger.log("⚠️ No es JSON válido: " + jsonError.message);
+    }
   }
   
   // ============================================
