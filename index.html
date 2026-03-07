@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TAD Dominicana - Publicidad en Taxis que Mueve tu Marca</title>
     <meta name="description" content="Impacta miles de pasajeros diariamente con publicidad digital en tablets dentro de taxis en República Dominicana.">
-    <meta name="keywords" content="publicidad digital, taxis, República Dominicana, marketing, advertising, TAD">
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
@@ -31,10 +30,6 @@
                             400: '#FFD700',
                             500: '#FFC700',
                             600: '#FFB700',
-                        },
-                        dark: {
-                            800: '#1A1A1A',
-                            900: '#0D0D0D',
                         }
                     }
                 }
@@ -56,12 +51,10 @@
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
         
         .gradient-bg { background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%); }
         .taxi-gradient { background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%); }
         
-        /* Floating WhatsApp Button */
         .whatsapp-float {
             position: fixed;
             bottom: 24px;
@@ -71,27 +64,29 @@
         }
         .whatsapp-float:hover { transform: scale(1.1); }
         
-        /* Form Success Animation */
         .success-checkmark {
             width: 80px;
             height: 80px;
             margin: 0 auto 20px;
             animation: scaleUp 0.5s ease-out forwards;
         }
-        @keyframes scaleUp {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
+        @keyframes scaleUp { from { transform: scale(0); } to { transform: scale(1); } }
         
-        /* Loading Spinner */
         .spinner {
             border: 3px solid rgba(255,255,255,0.3);
             border-radius: 50%;
             border-top-color: #FFD700;
             animation: spin 1s ease-in-out infinite;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Calculator Card Hover */
+        .calc-card {
+            transition: all 0.3s ease;
+        }
+        .calc-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.1);
         }
     </style>
 </head>
@@ -101,7 +96,12 @@
     <nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
+                <div class="flex items-center space-x-3">
+                    <!-- Brand Icon -->
+                    <svg class="w-8 h-8 taxi-gradient rounded-lg p-1.5" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="2" y="4" width="20" height="16" rx="3" fill="currentColor"/>
+                        <path d="M10 8l6 4-6 4V8z" fill="black"/>
+                    </svg>
                     <span class="text-2xl font-bold taxi-gradient bg-clip-text text-transparent">TAD</span>
                     <span class="ml-2 text-gray-400 hidden sm:inline">Dominicana</span>
                 </div>
@@ -121,6 +121,12 @@
     <section class="min-h-screen gradient-bg flex items-center justify-center pt-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div class="text-center">
+                <div class="inline-block mb-6 animate-fade-in-up">
+                    <svg class="w-20 h-20 taxi-gradient rounded-2xl p-4 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="2" y="4" width="20" height="16" rx="3" fill="currentColor"/>
+                        <path d="M10 8l6 4-6 4V8z" fill="black"/>
+                    </svg>
+                </div>
                 <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 animate-fade-in-up">
                     Publicidad en Taxis que
                     <span class="taxi-gradient bg-clip-text text-transparent">Mueve tu Marca</span>
@@ -227,6 +233,12 @@
     <section id="calculadora" class="py-20 bg-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
+                <div class="inline-block mb-4">
+                    <svg class="w-16 h-16 taxi-gradient rounded-xl p-3" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="2" y="4" width="20" height="16" rx="3" fill="currentColor"/>
+                        <path d="M10 8l6 4-6 4V8z" fill="black"/>
+                    </svg>
+                </div>
                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
                     Calcula Tu <span class="taxi-gradient bg-clip-text text-transparent">Inversión</span>
                 </h2>
@@ -235,13 +247,13 @@
                 </p>
             </div>
             
-            <div class="max-w-4xl mx-auto">
+            <div class="max-w-5xl mx-auto">
                 <div class="bg-zinc-900 rounded-3xl p-8 md:p-12 border border-white/10">
                     <!-- Calculator Inputs -->
-                    <div class="grid md:grid-cols-3 gap-8 mb-8">
+                    <div class="grid md:grid-cols-3 gap-8 mb-10">
                         <!-- Taxis -->
                         <div>
-                            <label class="block text-sm font-semibold mb-3">Número de Taxis</label>
+                            <label class="block text-sm font-semibold mb-3 text-gray-300">Número de Taxis</label>
                             <input type="range" id="taxisRange" min="1" max="100" value="10" 
                                 class="w-full h-2 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-yellow-500">
                             <div class="flex justify-between items-center mt-3">
@@ -253,7 +265,7 @@
                         
                         <!-- Espacios por Taxi -->
                         <div>
-                            <label class="block text-sm font-semibold mb-3">Espacios por Taxi</label>
+                            <label class="block text-sm font-semibold mb-3 text-gray-300">Espacios por Taxi</label>
                             <select id="spacesSelect" class="w-full bg-black border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none">
                                 <option value="1">1 espacio/taxi</option>
                                 <option value="2">2 espacios/taxi</option>
@@ -264,7 +276,7 @@
                         
                         <!-- Duración -->
                         <div>
-                            <label class="block text-sm font-semibold mb-3">Duración (meses)</label>
+                            <label class="block text-sm font-semibold mb-3 text-gray-300">Duración (meses)</label>
                             <select id="durationSelect" class="w-full bg-black border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none">
                                 <option value="1">1 mes</option>
                                 <option value="3">3 meses</option>
@@ -275,30 +287,36 @@
                         </div>
                     </div>
                     
-                    <!-- Results -->
-                    <div class="bg-black/50 rounded-2xl p-6 md:p-8 mb-8">
-                        <div class="grid md:grid-cols-3 gap-6">
-                            <div class="text-center">
-                                <p class="text-gray-400 text-sm mb-2">Inversión Mensual</p>
-                                <p id="monthlyInvestment" class="text-2xl md:text-3xl font-bold taxi-gradient">RD$ 15,000</p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-gray-400 text-sm mb-2">Duración</p>
-                                <p id="durationDisplay" class="text-2xl md:text-3xl font-bold text-white">3 meses</p>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-gray-400 text-sm mb-2">Inversión Total</p>
-                                <p id="totalInvestment" class="text-2xl md:text-3xl font-bold taxi-gradient">RD$ 45,000</p>
-                            </div>
+                    <!-- Results - Card Style -->
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <!-- Monthly Investment -->
+                        <div class="calc-card bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 rounded-2xl p-6 border border-yellow-500/20 text-center">
+                            <p class="text-gray-400 text-sm mb-2 uppercase tracking-wide">Inversión Mensual</p>
+                            <p id="monthlyInvestment" class="text-3xl md:text-4xl font-extrabold taxi-gradient">RD$ 15,000</p>
+                            <p class="text-gray-500 text-xs mt-2">Por 10 taxis × 1 espacio</p>
                         </div>
                         
-                        <!-- Impact Estimate -->
-                        <div class="mt-6 pt-6 border-t border-white/10">
-                            <div class="text-center">
-                                <p class="text-gray-400 text-sm mb-2">Impactos Mensuales Estimados</p>
-                                <p id="monthlyImpact" class="text-3xl md:text-4xl font-bold text-white">30,000</p>
-                                <p class="text-gray-400 text-xs mt-1">= 10 taxis × 1 espacio × 3,000 impactos/taxi</p>
-                            </div>
+                        <!-- Duration -->
+                        <div class="calc-card bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-2xl p-6 border border-white/10 text-center">
+                            <p class="text-gray-400 text-sm mb-2 uppercase tracking-wide">Duración</p>
+                            <p id="durationDisplay" class="text-3xl md:text-4xl font-extrabold text-white">3 meses</p>
+                            <p class="text-gray-500 text-xs mt-2">Período de campaña</p>
+                        </div>
+                        
+                        <!-- Total Investment -->
+                        <div class="calc-card bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 rounded-2xl p-6 border border-yellow-500/20 text-center">
+                            <p class="text-gray-400 text-sm mb-2 uppercase tracking-wide">Inversión Total</p>
+                            <p id="totalInvestment" class="text-3xl md:text-4xl font-extrabold taxi-gradient">RD$ 45,000</p>
+                            <p class="text-gray-500 text-xs mt-2">Inversión completa</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Impact Estimate -->
+                    <div class="bg-black/50 rounded-2xl p-6 mb-8">
+                        <div class="text-center">
+                            <p class="text-gray-400 text-sm mb-2">Impactos Mensuales Estimados</p>
+                            <p id="monthlyImpact" class="text-4xl md:text-5xl font-bold text-white">30,000</p>
+                            <p class="text-gray-400 text-xs mt-2">= 10 taxis × 1 espacio × 3,000 impactos/taxi</p>
                         </div>
                     </div>
                     
@@ -325,25 +343,25 @@
             
             <!-- Form Container -->
             <div id="formContainer" class="bg-black/50 rounded-3xl p-8 md:p-12 border border-white/10">
-                <form id="leadForm" onsubmit="handleSubmit(event)">
-                    <!-- Calculator Data (Hidden) -->
-                    <input type="hidden" id="formTaxis" name="taxis" value="10">
-                    <input type="hidden" id="formSpaces" name="espaciosPorTaxi" value="1">
-                    <input type="hidden" id="formDuration" name="duracion" value="3">
-                    <input type="hidden" id="formMonthly" name="inversionMensual" value="15000">
-                    <input type="hidden" id="formTotal" name="inversionTotal" value="45000">
+                <form id="leadForm">
+                    <!-- Hidden Fields for Calculator Data -->
+                    <input type="hidden" id="formTaxis" name="Taxis">
+                    <input type="hidden" id="formEspaciosPorTaxi" name="EspaciosPorTaxi">
+                    <input type="hidden" id="formDuracion" name="Duracion">
+                    <input type="hidden" id="formInversionMensual" name="InversionMensual">
+                    <input type="hidden" id="formInversionTotal" name="InversionTotal">
                     
                     <!-- Personal Info -->
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Nombre Completo *</label>
-                            <input type="text" id="nombre" name="nombre" required 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">Nombre Completo *</label>
+                            <input type="text" id="nombre" name="Nombre" required 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition"
                                 placeholder="Juan Pérez">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Empresa</label>
-                            <input type="text" id="empresa" name="empresa" 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">Empresa</label>
+                            <input type="text" id="empresa" name="Empresa" 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition"
                                 placeholder="Tu Empresa">
                         </div>
@@ -351,14 +369,14 @@
                     
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Puesto</label>
-                            <input type="text" id="puesto" name="puesto" 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">Puesto</label>
+                            <input type="text" id="puesto" name="Puesto" 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition"
                                 placeholder="Gerente de Marketing">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Teléfono *</label>
-                            <input type="tel" id="telefono" name="telefono" required 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">Teléfono *</label>
+                            <input type="tel" id="telefono" name="Telefono" required 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition"
                                 placeholder="+1 (849) 555-1234">
                         </div>
@@ -366,14 +384,14 @@
                     
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Email Corporativo *</label>
-                            <input type="email" id="correo" name="correo" required 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">Email Corporativo *</label>
+                            <input type="email" id="correo" name="Correo" required 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition"
                                 placeholder="juan@empresa.com">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Ciudad</label>
-                            <input type="text" id="ciudad" name="ciudad" 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">Ciudad</label>
+                            <input type="text" id="ciudad" name="Ciudad" 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition"
                                 placeholder="Santo Domingo">
                         </div>
@@ -381,8 +399,8 @@
                     
                     <div class="grid md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Industria</label>
-                            <select id="industria" name="industria" 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">Industria</label>
+                            <select id="industria" name="Industria" 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition">
                                 <option value="">Selecciona...</option>
                                 <option value="Restaurante">Restaurante</option>
@@ -396,8 +414,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Presupuesto</label>
-                            <select id="presupuesto" name="presupuesto" 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">Presupuesto</label>
+                            <select id="presupuesto" name="Presupuesto" 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition">
                                 <option value="">Selecciona...</option>
                                 <option value="RD$5,000-10,000">RD$5,000-10,000</option>
@@ -411,19 +429,19 @@
                     <!-- Extras -->
                     <div class="grid md:grid-cols-2 gap-6 mb-8">
                         <div>
-                            <label class="block text-sm font-semibold mb-2">¿Tienes Agencia?</label>
-                            <select id="tieneAgencia" name="tieneAgencia" 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">¿Tienes Agencia?</label>
+                            <select id="tieneAgencia" name="TieneAgencia" 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition">
                                 <option value="No">No</option>
-                                <option value="Sí">Sí</option>
+                                <option value="Si">Sí</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold mb-2">¿Necesita Diseño?</label>
-                            <select id="necesitaDiseno" name="necesitaDiseno" 
+                            <label class="block text-sm font-semibold mb-2 text-gray-300">¿Necesita Diseño?</label>
+                            <select id="necesitaDiseno" name="NecesitaDiseno" 
                                 class="w-full bg-zinc-900 border border-white/20 rounded-lg px-4 py-3 text-white focus:border-taxi-500 focus:outline-none transition">
                                 <option value="No">No</option>
-                                <option value="Sí">Sí</option>
+                                <option value="Si">Sí</option>
                             </select>
                         </div>
                     </div>
@@ -453,7 +471,7 @@
                 </div>
                 <h3 class="text-3xl font-bold mb-4">¡Solicitud Enviada!</h3>
                 <p class="text-gray-400 text-lg mb-8">
-                    Gracias por tu interés. Nos pondremos en contacto contigo en las próximas 24 horas.
+                    Gracias. Hemos recibido tu solicitud. Nuestro equipo se pondrá en contacto contigo.
                 </p>
                 <a href="https://wa.me/18495043872" target="_blank" 
                     class="inline-block bg-green-600 text-white font-semibold px-8 py-3 rounded-full hover:bg-green-700 transition">
@@ -467,8 +485,12 @@
     <footer class="py-12 bg-black border-t border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <span class="text-2xl font-bold taxi-gradient bg-clip-text text-transparent">TAD</span>
+                <div class="flex items-center space-x-3 mb-4 md:mb-0">
+                    <svg class="w-6 h-6 taxi-gradient rounded p-1" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="2" y="4" width="20" height="16" rx="3" fill="currentColor"/>
+                        <path d="M10 8l6 4-6 4V8z" fill="black"/>
+                    </svg>
+                    <span class="text-xl font-bold taxi-gradient bg-clip-text text-transparent">TAD</span>
                     <span class="ml-2 text-gray-400">Dominicana</span>
                 </div>
                 <div class="text-gray-400 text-sm">
@@ -481,7 +503,7 @@
     <!-- WhatsApp Float -->
     <a href="https://wa.me/18495043872" target="_blank" 
         class="whatsapp-float bg-green-600 hover:bg-green-700 text-white rounded-full p-4 shadow-lg">
-        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
         </svg>
     </a>
@@ -496,7 +518,7 @@
         const IMPACTS_PER_TAXI = 3000;
         
         // ============================================
-        // CALCULADORA
+        // CALCULADORA - ELEMENTOS
         // ============================================
         const taxisRange = document.getElementById('taxisRange');
         const spacesSelect = document.getElementById('spacesSelect');
@@ -507,13 +529,16 @@
         const totalInvestment = document.getElementById('totalInvestment');
         const monthlyImpact = document.getElementById('monthlyImpact');
         
-        // Hidden form fields
+        // Hidden form fields (con nombres exactos de Google Sheets)
         const formTaxis = document.getElementById('formTaxis');
-        const formSpaces = document.getElementById('formSpaces');
-        const formDuration = document.getElementById('formDuration');
-        const formMonthly = document.getElementById('formMonthly');
-        const formTotal = document.getElementById('formTotal');
+        const formEspaciosPorTaxi = document.getElementById('formEspaciosPorTaxi');
+        const formDuracion = document.getElementById('formDuracion');
+        const formInversionMensual = document.getElementById('formInversionMensual');
+        const formInversionTotal = document.getElementById('formInversionTotal');
         
+        // ============================================
+        // CALCULADORA - LOGICA
+        // ============================================
         function updateCalculator() {
             const taxis = parseInt(taxisRange.value);
             const spaces = parseInt(spacesSelect.value);
@@ -539,12 +564,16 @@
             totalInvestment.textContent = 'RD$ ' + Math.round(total).toLocaleString();
             monthlyImpact.textContent = impact.toLocaleString();
             
-            // Update hidden form fields
+            // Update hidden form fields (CRITICAL - ensures values are sent)
             formTaxis.value = taxis;
-            formSpaces.value = spaces;
-            formDuration.value = duration;
-            formMonthly.value = monthly;
-            formTotal.value = Math.round(total);
+            formEspaciosPorTaxi.value = spaces;
+            formDuracion.value = duration;
+            formInversionMensual.value = monthly;
+            formInversionTotal.value = Math.round(total);
+            
+            console.log('🧮 Calculator updated:', {
+                taxis, spaces, duration, monthly, total: Math.round(total), impact
+            });
         }
         
         // Event listeners
@@ -567,8 +596,8 @@
         // ============================================
         // FORM SUBMISSION
         // ============================================
-        async function handleSubmit(event) {
-            event.preventDefault();
+        document.getElementById('leadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
             const submitBtn = document.getElementById('submitBtn');
             const submitText = document.getElementById('submitText');
@@ -579,41 +608,50 @@
             submitText.classList.add('hidden');
             submitLoading.classList.remove('hidden');
             
-            // Collect form data
+            // Force update calculator values before sending
+            updateCalculator();
+            
+            // Collect ALL form data
             const formData = {
-                nombre: document.getElementById('nombre').value.trim(),
-                empresa: document.getElementById('empresa').value.trim(),
-                puesto: document.getElementById('puesto').value.trim(),
-                telefono: document.getElementById('telefono').value.trim(),
-                correo: document.getElementById('correo').value.trim(),
-                ciudad: document.getElementById('ciudad').value.trim(),
-                industria: document.getElementById('industria').value,
-                presupuesto: document.getElementById('presupuesto').value,
-                tieneAgencia: document.getElementById('tieneAgencia').value,
-                necesitaDiseno: document.getElementById('necesitaDiseno').value,
-                taxis: formTaxis.value,
-                espaciosPorTaxi: formSpaces.value,
-                duracion: formDuration.value,
-                inversionMensual: formMonthly.value,
-                inversionTotal: formTotal.value,
+                // Personal info
+                Nombre: document.getElementById('nombre').value.trim(),
+                Empresa: document.getElementById('empresa').value.trim(),
+                Puesto: document.getElementById('puesto').value.trim(),
+                Telefono: document.getElementById('telefono').value.trim(),
+                Correo: document.getElementById('correo').value.trim(),
+                Ciudad: document.getElementById('ciudad').value.trim(),
+                Industria: document.getElementById('industria').value,
+                Presupuesto: document.getElementById('presupuesto').value,
+                TieneAgencia: document.getElementById('tieneAgencia').value,
+                NecesitaDiseno: document.getElementById('necesitaDiseno').value,
+                
+                // Calculator data (from hidden fields)
+                Taxis: formTaxis.value,
+                EspaciosPorTaxi: formEspaciosPorTaxi.value,
+                Duracion: formDuracion.value,
+                InversionMensual: formInversionMensual.value,
+                InversionTotal: formInversionTotal.value,
+                
+                // Metadata
                 tipo: 'anunciante',
                 source: 'landing-anunciantes',
                 fecha: new Date().toISOString()
             };
             
-            console.log('📦 Datos del formulario:', formData);
+            console.log('📦 Form data before send:', formData);
+            
+            // Build URLSearchParams
+            const params = new URLSearchParams();
+            for (const [key, value] of Object.entries(formData)) {
+                if (value && value !== '') {
+                    params.append(key, value);
+                }
+            }
+            
+            console.log('📤 URLSearchParams:', params.toString());
+            console.log('📤 Sending to:', WEBHOOK_URL);
             
             try {
-                // Build URLSearchParams
-                const params = new URLSearchParams();
-                for (const [key, value] of Object.entries(formData)) {
-                    if (value) {
-                        params.append(key, value);
-                    }
-                }
-                
-                console.log('📤 Enviando a:', WEBHOOK_URL);
-                
                 // Send to webhook
                 const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
@@ -624,7 +662,7 @@
                     body: params
                 });
                 
-                console.log('✅ Respuesta recibida:', response.status);
+                console.log('✅ Response received:', response.status);
                 
                 // Show success message
                 document.getElementById('formContainer').classList.add('hidden');
@@ -632,6 +670,11 @@
                 
                 // Scroll to success message
                 document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+                
+                // Track conversion (placeholder for analytics)
+                if (typeof trackConversion === 'function') {
+                    trackConversion();
+                }
                 
             } catch (error) {
                 console.error('❌ Error:', error);
@@ -642,20 +685,22 @@
                 submitText.classList.remove('hidden');
                 submitLoading.classList.add('hidden');
             }
-        }
+        });
         
         // ============================================
         // ANALYTICS PLACEHOLDERS
         // ============================================
-        // Google Analytics: Add your tracking code here
-        // Facebook Pixel: Add your pixel code here
-        // TikTok Pixel: Add your pixel code here
-        
-        // Example: Track form submission
         function trackConversion() {
+            // Google Analytics
             // gtag('event', 'submit', { 'event_category': 'form', 'event_label': 'lead' });
+            
+            // Facebook Pixel
             // fbq('track', 'Lead');
+            
+            // TikTok Pixel
             // ttq.track('SubmitForm');
+            
+            console.log('📊 Conversion tracked');
         }
     </script>
 </body>
