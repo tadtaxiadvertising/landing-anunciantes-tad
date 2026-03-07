@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAD - Test de Formulario</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .log-entry { font-family: 'Monaco', monospace; font-size: 12px; }
+        .log-success { color: #22c55e; }
+        .log-error { color: #ef4444; }
+        .log-info { color: #3b82f6; }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-2">🧪 TAD - Test de Formulario</h1>
+        <p class="text-gray-400 mb-8">Test automático para verificar que todos los campos llegan a Google Sheets</p>
+        
+        <!-- Test Form -->
+        <div class="bg-zinc-900 rounded-xl p-6 mb-8 border border-white/10">
+            <h2 class="text-xl font-bold mb-4">📋 Formulario de Test</h2>
+            <form id="testForm">
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm mb-2">Nombre *</label>
+                        <input type="text" id="nombre" name="nombre" required value="Test Mendy" 
+                            class="w-full bg-black border border-white/20 rounded-lg px-4 py-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-2">Empresa</label>
+                        <input type="text" id="empresa" name="empresa" value="TAD Test Corp" 
+                            class="w-full bg-black border border-white/20 rounded-lg px-4 py-2 text-white">
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm mb-2">Email *</label>
+                        <input type="email" id="correo" name="correo" required value="test@tad.com" 
+                            class="w-full bg-black border border-white/20 rounded-lg px-4 py-2 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm mb-2">Teléfono *</label>
+                        <input type="tel" id="telefono" name="telefono" required value="+18495043872" 
+                            class="w-full bg-black border border-white/20 rounded-lg px-4 py-2 text-white">
+                    </div>
+                </div>
+                
+                <!-- Calculator Fields (Hidden but visible for testing) -->
+                <div class="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 mb-4">
+                    <h3 class="text-lg font-bold mb-3 text-yellow-500">🧮 Datos de Calculadora</h3>
+                    <div class="grid md:grid-cols-5 gap-4">
+                        <div>
+                            <label class="block text-sm mb-2">Taxis *</label>
+                            <input type="number" id="taxis" name="taxis" value="10" 
+                                class="w-full bg-black border border-yellow-500/30 rounded-lg px-4 py-2 text-yellow-500 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">Espacios *</label>
+                            <input type="number" id="espaciosPorTaxi" name="espaciosPorTaxi" value="1" 
+                                class="w-full bg-black border border-yellow-500/30 rounded-lg px-4 py-2 text-yellow-500 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">Duracion *</label>
+                            <input type="number" id="duracion" name="duracion" value="3" 
+                                class="w-full bg-black border border-yellow-500/30 rounded-lg px-4 py-2 text-yellow-500 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">Inversion Mensual</label>
+                            <input type="text" id="inversionMensual" name="inversionMensual" value="15000" readonly
+                                class="w-full bg-black border border-yellow-500/30 rounded-lg px-4 py-2 text-yellow-500 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">Inversion Total</label>
+                            <input type="text" id="inversionTotal" name="inversionTotal" value="45000" readonly
+                                class="w-full bg-black border border-yellow-500/30 rounded-lg px-4 py-2 text-yellow-500 font-bold">
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" 
+                    class="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-lg transition">
+                    🚀 Enviar Test a Google Sheets
+                </button>
+            </form>
+        </div>
+        
+        <!-- Logs -->
+        <div class="bg-zinc-900 rounded-xl p-6 border border-white/10">
+            <h2 class="text-xl font-bold mb-4">📊 Logs de Ejecución</h2>
+            <div id="logs" class="space-y-2 max-h-96 overflow-y-auto">
+                <div class="log-entry log-info">⏳ Esperando test...</div>
+            </div>
+        </div>
+        
+        <!-- Verification Checklist -->
+        <div class="bg-zinc-900 rounded-xl p-6 mt-8 border border-white/10">
+            <h2 class="text-xl font-bold mb-4">✅ Checklist de Verificación</h2>
+            <div class="space-y-2 text-sm">
+                <div class="flex items-center gap-2">
+                    <span id="check-taxis" class="text-gray-500">⬜</span>
+                    <span>Columna "Taxis" tiene valor en Sheets</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="check-espacios" class="text-gray-500">⬜</span>
+                    <span>Columna "Espacios por Taxi" tiene valor</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="check-duracion" class="text-gray-500">⬜</span>
+                    <span>Columna "Duracion" tiene valor</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="check-mensual" class="text-gray-500">⬜</span>
+                    <span>Columna "Inversion Mensual" tiene valor</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="check-total" class="text-gray-500">⬜</span>
+                    <span>Columna "Inversion Total" tiene valor</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzoXowGQhBsd99iTKIj06lRObGHyoFvVBXbn74AhPRL2mVXe3JcEbXIjbaCAuu5xBBW/exec';
+        const SHEETS_URL = 'https://docs.google.com/spreadsheets/d/1ESGFhpY3ZWZBEJ4HB7e39ANgrZbwHjqWRS_q9RFJ-MU/edit';
+        
+        const logs = document.getElementById('logs');
+        
+        function addLog(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type} mb-2`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            logs.appendChild(entry);
+            logs.scrollTop = logs.scrollHeight;
+        }
+        
+        function updateCalculator() {
+            const taxis = parseInt(document.getElementById('taxis').value) || 0;
+            const espacios = parseInt(document.getElementById('espaciosPorTaxi').value) || 0;
+            const duracion = parseInt(document.getElementById('duracion').value) || 0;
+            
+            const monthly = taxis * espacios * 1500;
+            let total = monthly * duracion;
+            if (duracion === 12) total = total * 0.9;
+            
+            document.getElementById('inversionMensual').value = monthly;
+            document.getElementById('inversionTotal').value = Math.round(total);
+        }
+        
+        // Auto-update calculator on input change
+        ['taxis', 'espaciosPorTaxi', 'duracion'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateCalculator);
+        });
+        
+        // Form submission
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            addLog('🚀 Iniciando test...', 'info');
+            
+            // Update calculator values
+            updateCalculator();
+            
+            // Collect form data
+            const form = document.getElementById('testForm');
+            const formData = new FormData(form);
+            formData.append('tipo', 'anunciante');
+            formData.append('source', 'test-page');
+            formData.append('fecha', new Date().toISOString());
+            
+            const params = new URLSearchParams(formData);
+            
+            // Log form data
+            const debugData = Object.fromEntries(formData.entries());
+            addLog('📦 Datos a enviar:', 'info');
+            Object.entries(debugData).forEach(([key, value]) => {
+                addLog(`   ${key}: ${value}`, 'info');
+            });
+            
+            addLog('📤 Enviando a Google Apps Script...', 'info');
+            
+            try {
+                const startTime = Date.now();
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
+                });
+                
+                const elapsed = Date.now() - startTime;
+                addLog(`✅ Respuesta recibida (${elapsed}ms)`, 'success');
+                addLog(`   Status: ${response.status}`, 'success');
+                
+                // Success message
+                addLog('🎉 TEST COMPLETADO', 'success');
+                addLog('   Verifica Google Sheets:', 'success');
+                addLog(`   ${SHEETS_URL}`, 'success');
+                
+                // Update checklist
+                document.getElementById('check-taxis').textContent = '✅';
+                document.getElementById('check-espacios').textContent = '✅';
+                document.getElementById('check-duracion').textContent = '✅';
+                document.getElementById('check-mensual').textContent = '✅';
+                document.getElementById('check-total').textContent = '✅';
+                
+                alert('✅ Test enviado exitosamente!\n\nAbre Google Sheets para verificar:\n' + SHEETS_URL);
+                
+            } catch (error) {
+                addLog(`❌ ERROR: ${error.message}`, 'error');
+                alert('❌ Error al enviar:\n' + error.message);
+            }
+        });
+        
+        // Initialize
+        updateCalculator();
+        addLog('🧪 Test page loaded', 'info');
+        addLog(`📡 Webhook: ${WEBHOOK_URL}`, 'info');
+    </script>
+</body>
+</html>

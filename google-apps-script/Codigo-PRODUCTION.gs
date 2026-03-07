@@ -243,16 +243,16 @@ function normalizeKeys(obj) {
 }
 
 /**
- * Normaliza una key individual
+ * Normaliza una key individual (preserva camelCase)
  */
 function normalizeKey(key) {
   if (!key) return '';
   
+  // Solo quitar acentos y normalizar, pero preservar camelCase
   return key
-    .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]/g, '');
+    .replace(/[\u0300-\u036f]/g, '')  // Quitar acentos
+    .replace(/[^a-zA-Z0-9]/g, '');      // Quitar espacios y especiales, pero mantener case
 }
 
 // ============================================
