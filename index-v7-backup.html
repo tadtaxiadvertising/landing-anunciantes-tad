@@ -3,26 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TAD Dominicana | Publicidad Digital en Taxis - Impacta +50K Pasajeros/Mes</title>
+    <title>TAD Dominicana - Publicidad en Taxis | Impacta Miles de Clientes</title>
     
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Publicidad digital en taxis de República Dominicana. Impacta +50K pasajeros mensuales desde RD$1,500/taxi. Campañas medibles, segmentadas y de alto impacto.">
-    <meta name="keywords" content="publicidad taxis, marketing dominicana, publicidad móvil, DOOH, advertising Santo Domingo, publicidad digital RD">
+    <meta name="description" content="Publicidad digital en taxis de República Dominicana. Impacta +50K pasajeros mensuales desde RD$1,500/taxi.">
+    <meta name="keywords" content="publicidad taxis, marketing dominicana, publicidad móvil, DOOH, advertising Santo Domingo">
     <meta name="author" content="TAD Dominicana">
-    <meta name="robots" content="index, follow">
     
-    <!-- Open Graph / Social Media -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="TAD Dominicana | Publicidad Digital en Taxis">
+    <meta property="og:title" content="TAD Dominicana - Publicidad en Taxis">
     <meta property="og:description" content="Impacta miles de pasajeros diariamente con publicidad digital en tablets dentro de taxis.">
     <meta property="og:url" content="https://landing-anunciantes-tad.vercel.app">
-    <meta property="og:image" content="https://landing-anunciantes-tad.vercel.app/og-image.jpg">
-    <meta property="og:locale" content="es_DO">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="TAD Dominicana | Publicidad Digital en Taxis">
-    <meta name="twitter:description" content="Impacta +50K pasajeros mensuales desde RD$1,500/taxi.">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://landing-anunciantes-tad.vercel.app">
@@ -39,23 +31,6 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect x='2' y='4' width='20' height='16' rx='4' fill='%23FFD700'/><path d='M10 8l6 4-6 4V8z' fill='white'/></svg>">
-    
-    <!-- JSON-LD Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "TAD Dominicana",
-      "description": "Publicidad digital en taxis de República Dominicana",
-      "url": "https://landing-anunciantes-tad.vercel.app",
-      "logo": "https://landing-anunciantes-tad.vercel.app/logo.png",
-      "areaServed": {
-        "@type": "Country",
-        "name": "República Dominicana"
-      },
-      "priceRange": "RD$1,500+"
-    }
-    </script>
     
     <!-- Custom Styles -->
     <style>
@@ -77,21 +52,10 @@
             to { transform: rotate(360deg); }
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
         .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
         
         .gradient-bg { background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%); }
         .taxi-gradient { background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%); }
@@ -103,7 +67,6 @@
             right: 24px;
             z-index: 100;
             transition: transform 0.3s;
-            animation: float 3s ease-in-out infinite;
         }
         .whatsapp-float:hover { transform: scale(1.1); }
         
@@ -123,13 +86,12 @@
             animation: spin 1s ease-in-out infinite;
         }
         
-        /* Calculator Card */
+        /* Calculator Card - Clean Design */
         .calc-card {
             transition: all 0.3s ease;
         }
         .calc-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.1);
         }
         
         /* Number Animation */
@@ -177,7 +139,7 @@
             transform: translateX(0);
         }
         
-        /* Logo Icon */
+        /* Logo Icon - Yellow Square with Play */
         .logo-icon {
             width: 40px;
             height: 40px;
@@ -190,46 +152,6 @@
         .logo-icon svg {
             width: 20px;
             height: 20px;
-        }
-        
-        /* Section Dividers */
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-        }
-        
-        /* FAQ Accordion */
-        .faq-item {
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .faq-item.active .faq-answer {
-            max-height: 300px;
-        }
-        .faq-item.active .faq-icon {
-            transform: rotate(180deg);
-        }
-        
-        /* Button Pulse */
-        .btn-pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        /* Sticky CTA Mobile */
-        .sticky-cta-mobile {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 99;
-            padding: 16px;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255,255,255,0.1);
         }
     </style>
 </head>
@@ -256,12 +178,9 @@
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#problema" class="text-gray-300 hover:text-white transition text-sm font-medium">Problema</a>
-                    <a href="#solucion" class="text-gray-300 hover:text-white transition text-sm font-medium">Solución</a>
                     <a href="#beneficios" class="text-gray-300 hover:text-white transition text-sm font-medium">Beneficios</a>
-                    <a href="#como-funciona" class="text-gray-300 hover:text-white transition text-sm font-medium">Cómo Funciona</a>
-                    <a href="#planes" class="text-gray-300 hover:text-white transition text-sm font-medium">Planes</a>
-                    <a href="#faq" class="text-gray-300 hover:text-white transition text-sm font-medium">FAQ</a>
+                    <a href="#calculadora" class="text-gray-300 hover:text-white transition text-sm font-medium">Calculadora</a>
+                    <a href="#contacto" class="text-gray-300 hover:text-white transition text-sm font-medium">Contacto</a>
                     <a href="#contacto" class="taxi-gradient text-black font-semibold px-6 py-2.5 rounded-full hover:opacity-90 transition text-sm">
                         Empezar Ahora
                     </a>
@@ -279,12 +198,9 @@
         <!-- Mobile Menu -->
         <div class="mobile-menu fixed top-20 left-0 right-0 bg-black/95 backdrop-blur-md md:hidden border-b border-white/5" id="mobileMenu">
             <div class="px-4 py-6 space-y-4">
-                <a href="#problema" class="block text-gray-300 hover:text-white transition py-2">Problema</a>
-                <a href="#solucion" class="block text-gray-300 hover:text-white transition py-2">Solución</a>
                 <a href="#beneficios" class="block text-gray-300 hover:text-white transition py-2">Beneficios</a>
-                <a href="#como-funciona" class="block text-gray-300 hover:text-white transition py-2">Cómo Funciona</a>
-                <a href="#planes" class="block text-gray-300 hover:text-white transition py-2">Planes</a>
-                <a href="#faq" class="block text-gray-300 hover:text-white transition py-2">FAQ</a>
+                <a href="#calculadora" class="block text-gray-300 hover:text-white transition py-2">Calculadora</a>
+                <a href="#contacto" class="block text-gray-300 hover:text-white transition py-2">Contacto</a>
                 <a href="#contacto" class="block taxi-gradient text-black font-semibold px-6 py-3 rounded-full text-center">
                     Empezar Ahora
                 </a>
@@ -310,50 +226,28 @@
                     
                     <!-- Headline -->
                     <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 animate-fade-in-up leading-tight">
-                        Tu Marca en Cada
+                        Publicidad en Taxis que
                         <br>
-                        <span class="taxi-gradient bg-clip-text text-transparent">Viaje en Taxi</span>
+                        <span class="taxi-gradient bg-clip-text text-transparent">Mueve tu Marca</span>
                     </h1>
                     
                     <!-- Subheadline -->
                     <p class="text-lg sm:text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto animate-fade-in-up delay-100 leading-relaxed">
-                        La plataforma de publicidad digital más grande de República Dominicana. Impacta +50K pasajeros mensuales desde RD$1,500/taxi.
+                        Impacta miles de pasajeros diariamente con publicidad digital en tablets dentro de taxis en República Dominicana.
                     </p>
                     
                     <!-- CTA Buttons -->
                     <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up delay-200">
-                        <a href="#calculadora" class="taxi-gradient text-black font-bold px-10 py-4 rounded-full text-lg hover:opacity-90 transition transform hover:scale-105 inline-flex items-center justify-center btn-pulse">
+                        <a href="#calculadora" class="taxi-gradient text-black font-bold px-10 py-4 rounded-full text-lg hover:opacity-90 transition transform hover:scale-105 inline-flex items-center justify-center">
                             Calcular mi Campaña
                         </a>
-                        <a href="#como-funciona" class="border border-white/20 text-white font-semibold px-10 py-4 rounded-full text-lg hover:bg-white/5 transition inline-flex items-center justify-center">
-                            Ver Cómo Funciona
+                        <a href="#beneficios" class="border border-white/20 text-white font-semibold px-10 py-4 rounded-full text-lg hover:bg-white/5 transition inline-flex items-center justify-center">
+                            Ver Beneficios
                         </a>
                     </div>
                     
-                    <!-- Trust Indicators -->
-                    <div class="flex flex-wrap justify-center gap-8 mt-12 animate-fade-in-up delay-300">
-                        <div class="flex items-center space-x-2 text-gray-400 text-sm">
-                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Sin contrato a largo plazo</span>
-                        </div>
-                        <div class="flex items-center space-x-2 text-gray-400 text-sm">
-                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Cancela cuando quieras</span>
-                        </div>
-                        <div class="flex items-center space-x-2 text-gray-400 text-sm">
-                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                            </svg>
-                            <span>Soporte 24/7</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Stats -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-20 animate-fade-in-up delay-400">
+                    <!-- Stats - Clean Design -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-20 animate-fade-in-up delay-300">
                         <div class="text-center">
                             <div class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">+50K</div>
                             <div class="text-gray-500 text-sm font-medium">Pasajeros/mes</div>
@@ -375,140 +269,21 @@
             </div>
         </section>
         
-        <!-- Problem Section -->
-        <section id="problema" class="py-24 bg-black" aria-labelledby="problem-heading">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 id="problem-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                        El Problema de la
-                        <span class="text-red-500"> Publicidad Tradicional</span>
-                    </h2>
-                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                        Los anunciantes enfrentan desafíos constantes para llegar a su audiencia de manera efectiva.
-                    </p>
-                </div>
-                
-                <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Problem 1 -->
-                    <div class="bg-zinc-900/50 rounded-2xl p-8 border border-red-500/20">
-                        <div class="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-white">Alto Costo, Bajo Alcance</h3>
-                        <p class="text-gray-400 leading-relaxed">Vallas y medios tradicionales cuestan miles pero llegan a una audiencia limitada y poco segmentada.</p>
-                    </div>
-                    
-                    <!-- Problem 2 -->
-                    <div class="bg-zinc-900/50 rounded-2xl p-8 border border-red-500/20">
-                        <div class="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-white">Sin Medición Real</h3>
-                        <p class="text-gray-400 leading-relaxed">No sabes cuántas personas realmente vieron tu anuncio ni el impacto real en tu negocio.</p>
-                    </div>
-                    
-                    <!-- Problem 3 -->
-                    <div class="bg-zinc-900/50 rounded-2xl p-8 border border-red-500/20">
-                        <div class="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-7 h-7 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-3 text-white">Audiencia No Segmentada</h3>
-                        <p class="text-gray-400 leading-relaxed">Tu mensaje llega a todos, pero no específicamente a quienes realmente pueden convertirse en clientes.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Solution Section -->
-        <section id="solucion" class="py-24 bg-zinc-900/50" aria-labelledby="solution-heading">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <div class="inline-block mb-4">
-                        <div class="w-20 h-20 taxi-gradient rounded-2xl flex items-center justify-center mx-auto">
-                            <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M10 8l6 4-6 4V8z"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <h2 id="solution-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                        La Solución: <span class="taxi-gradient bg-clip-text text-transparent">Publicidad en Taxis</span>
-                    </h2>
-                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                        Tablets digitales dentro de taxis que captan la atención de pasajeros en movimiento.
-                    </p>
-                </div>
-                
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Feature 1 -->
-                    <div class="text-center p-6">
-                        <div class="w-16 h-16 taxi-gradient rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-bold mb-2 text-white">Audiencia Cautiva</h3>
-                        <p class="text-gray-400 text-sm">Pasajeros en viajes de 15-45 minutos, sin distracciones externas.</p>
-                    </div>
-                    
-                    <!-- Feature 2 -->
-                    <div class="text-center p-6">
-                        <div class="w-16 h-16 taxi-gradient rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-bold mb-2 text-white">Segmentación Geográfica</h3>
-                        <p class="text-gray-400 text-sm">Elige zonas específicas: Santiago, Santo Domingo, Punta Cana.</p>
-                    </div>
-                    
-                    <!-- Feature 3 -->
-                    <div class="text-center p-6">
-                        <div class="w-16 h-16 taxi-gradient rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-bold mb-2 text-white">Métricas en Tiempo Real</h3>
-                        <p class="text-gray-400 text-sm">Dashboard con impresiones, engagement y ROI de tu campaña.</p>
-                    </div>
-                    
-                    <!-- Feature 4 -->
-                    <div class="text-center p-6">
-                        <div class="w-16 h-16 taxi-gradient rounded-2xl flex items-center justify-center mb-6 mx-auto">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-lg font-bold mb-2 text-white">Costo por Impacto Mínimo</h3>
-                        <p class="text-gray-400 text-sm">RD$0.50 por impacto vs RD$5-10 de medios tradicionales.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
         <!-- Benefits Section -->
         <section id="beneficios" class="py-24 bg-black" aria-labelledby="benefits-heading">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16">
                     <h2 id="benefits-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                        Beneficios <span class="text-white">Clave</span>
+                        ¿Por Qué <span class="text-white">Elegirnos</span>?
                     </h2>
                     <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                        Por qué las marcas eligen TAD Dominicana para sus campañas publicitarias.
+                        La forma más efectiva de llegar a miles de clientes potenciales en movimiento.
                     </p>
                 </div>
                 
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" role="list">
                     <!-- Benefit 1 -->
-                    <div class="text-center p-6">
+                    <div class="text-center p-6" role="listitem">
                         <div class="w-16 h-16 taxi-gradient rounded-2xl flex items-center justify-center mb-6 mx-auto">
                             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -520,7 +295,7 @@
                     </div>
                     
                     <!-- Benefit 2 -->
-                    <div class="text-center p-6">
+                    <div class="text-center p-6" role="listitem">
                         <div class="w-16 h-16 taxi-gradient rounded-2xl flex items-center justify-center mb-6 mx-auto">
                             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -531,7 +306,7 @@
                     </div>
                     
                     <!-- Benefit 3 -->
-                    <div class="text-center p-6">
+                    <div class="text-center p-6" role="listitem">
                         <div class="w-16 h-16 taxi-gradient rounded-2xl flex items-center justify-center mb-6 mx-auto">
                             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -543,7 +318,7 @@
                     </div>
                     
                     <!-- Benefit 4 -->
-                    <div class="text-center p-6">
+                    <div class="text-center p-6" role="listitem">
                         <div class="w-16 h-16 taxi-gradient rounded-2xl flex items-center justify-center mb-6 mx-auto">
                             <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -556,48 +331,8 @@
             </div>
         </section>
         
-        <!-- How It Works Section -->
-        <section id="como-funciona" class="py-24 bg-zinc-900/50" aria-labelledby="how-heading">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 id="how-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                        Cómo <span class="text-white">Funciona</span>
-                    </h2>
-                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                        Tres pasos simples para lanzar tu campaña publicitaria.
-                    </p>
-                </div>
-                
-                <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Step 1 -->
-                    <div class="text-center relative">
-                        <div class="w-20 h-20 taxi-gradient rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-black">1</div>
-                        <h3 class="text-xl font-bold mb-3 text-white">Elige Tu Campaña</h3>
-                        <p class="text-gray-400 leading-relaxed mb-4">Selecciona número de taxis, espacios y duración. Usa nuestra calculadora para ver costos.</p>
-                        <a href="#calculadora" class="text-yellow-500 font-semibold hover:text-yellow-400 transition">Calcular ahora →</a>
-                    </div>
-                    
-                    <!-- Step 2 -->
-                    <div class="text-center relative">
-                        <div class="w-20 h-20 taxi-gradient rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-black">2</div>
-                        <h3 class="text-xl font-bold mb-3 text-white">Envía Tu Contenido</h3>
-                        <p class="text-gray-400 leading-relaxed mb-4">Proporciona tus videos o imágenes. Nuestro equipo de diseño puede ayudarte si lo necesitas.</p>
-                        <span class="text-gray-500 text-sm">Formatos: MP4, JPG, PNG</span>
-                    </div>
-                    
-                    <!-- Step 3 -->
-                    <div class="text-center relative">
-                        <div class="w-20 h-20 taxi-gradient rounded-full flex items-center justify-center mx-auto mb-6 text-3xl font-bold text-black">3</div>
-                        <h3 class="text-xl font-bold mb-3 text-white">Lanza y Monitorea</h3>
-                        <p class="text-gray-400 leading-relaxed mb-4">Tu campaña se activa en 24-48 horas. Accede al dashboard para ver métricas en tiempo real.</p>
-                        <span class="text-gray-500 text-sm">Dashboard 24/7 incluido</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
         <!-- Calculator Section -->
-        <section id="calculadora" class="py-24 bg-black" aria-labelledby="calculator-heading">
+        <section id="calculadora" class="py-24 bg-zinc-900/50" aria-labelledby="calculator-heading">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16">
                     <h2 id="calculator-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
@@ -648,26 +383,29 @@
                         </div>
                     </div>
                     
-                    <!-- Results -->
+                    <!-- Results - Clean Cards -->
                     <div class="grid md:grid-cols-3 gap-6 mb-10">
-                        <div class="calc-card bg-zinc-900 rounded-2xl p-8 text-center">
+                        <!-- Monthly Investment -->
+                        <div class="calc-card bg-black rounded-2xl p-8 text-center">
                             <p class="text-gray-500 text-xs mb-3 uppercase tracking-wide">Inversión Mensual</p>
                             <p id="monthlyInvestment" class="text-4xl md:text-5xl font-extrabold text-white" aria-live="polite">RD$ 15,000</p>
                         </div>
                         
-                        <div class="calc-card bg-zinc-900 rounded-2xl p-8 text-center">
+                        <!-- Duration -->
+                        <div class="calc-card bg-black rounded-2xl p-8 text-center">
                             <p class="text-gray-500 text-xs mb-3 uppercase tracking-wide">Duración</p>
                             <p id="durationDisplay" class="text-4xl md:text-5xl font-extrabold text-white" aria-live="polite">3 meses</p>
                         </div>
                         
+                        <!-- Total Investment -->
                         <div class="calc-card taxi-gradient rounded-2xl p-8 text-center">
                             <p class="text-black/70 text-xs mb-3 uppercase tracking-wide">Inversión Total</p>
                             <p id="totalInvestment" class="text-4xl md:text-5xl font-extrabold text-black" aria-live="polite">RD$ 45,000</p>
                         </div>
                     </div>
                     
-                    <!-- Impact -->
-                    <div class="bg-zinc-900 rounded-2xl p-8 mb-10 text-center">
+                    <!-- Impact Estimate -->
+                    <div class="bg-black rounded-2xl p-8 mb-10 text-center">
                         <p class="text-gray-500 text-sm mb-3">Impactos Mensuales Estimados</p>
                         <p id="monthlyImpact" class="text-5xl md:text-6xl font-bold text-white" aria-live="polite">30,000</p>
                         <p class="text-gray-500 text-xs mt-3">= 10 taxis × 1 espacio × 3,000 impactos/taxi</p>
@@ -683,201 +421,8 @@
             </div>
         </section>
         
-        <!-- Plans Section -->
-        <section id="planes" class="py-24 bg-zinc-900/50" aria-labelledby="plans-heading">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 id="plans-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                        Planes <span class="text-white">Populares</span>
-                    </h2>
-                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                        Paquetes diseñados para diferentes necesidades y presupuestos.
-                    </p>
-                </div>
-                
-                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                    <!-- Starter -->
-                    <div class="bg-black rounded-3xl p-8 border border-white/10">
-                        <h3 class="text-2xl font-bold text-white mb-2">Starter</h3>
-                        <p class="text-gray-400 text-sm mb-6">Para negocios locales</p>
-                        <div class="mb-6">
-                            <span class="text-5xl font-bold text-white">RD$15K</span>
-                            <span class="text-gray-400">/mes</span>
-                        </div>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                10 taxis
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                1 espacio/taxi
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                30K impactos/mes
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                Dashboard básico
-                            </li>
-                        </ul>
-                        <a href="#contacto" class="block w-full border border-white/20 text-white font-semibold py-3 rounded-full text-center hover:bg-white/5 transition">Elegir Starter</a>
-                    </div>
-                    
-                    <!-- Professional -->
-                    <div class="bg-gradient-to-b from-yellow-500/20 to-black rounded-3xl p-8 border-2 border-yellow-500 relative">
-                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 taxi-gradient text-black font-bold px-4 py-1 rounded-full text-sm">MÁS POPULAR</div>
-                        <h3 class="text-2xl font-bold text-white mb-2">Professional</h3>
-                        <p class="text-gray-400 text-sm mb-6">Para marcas en crecimiento</p>
-                        <div class="mb-6">
-                            <span class="text-5xl font-bold text-white">RD$75K</span>
-                            <span class="text-gray-400">/mes</span>
-                        </div>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                50 taxis
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                2 espacios/taxi
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                300K impactos/mes
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                Dashboard premium
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                Soporte prioritario
-                            </li>
-                        </ul>
-                        <a href="#contacto" class="block w-full taxi-gradient text-black font-bold py-3 rounded-full text-center hover:opacity-90 transition">Elegir Professional</a>
-                    </div>
-                    
-                    <!-- Enterprise -->
-                    <div class="bg-black rounded-3xl p-8 border border-white/10">
-                        <h3 class="text-2xl font-bold text-white mb-2">Enterprise</h3>
-                        <p class="text-gray-400 text-sm mb-6">Para grandes campañas</p>
-                        <div class="mb-6">
-                            <span class="text-5xl font-bold text-white">RD$150K</span>
-                            <span class="text-gray-400">/mes</span>
-                        </div>
-                        <ul class="space-y-3 mb-8">
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                100 taxis
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                3 espacios/taxi
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                600K impactos/mes
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                Dashboard + API
-                            </li>
-                            <li class="flex items-center text-gray-300">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                Gerente dedicado
-                            </li>
-                        </ul>
-                        <a href="#contacto" class="block w-full border border-white/20 text-white font-semibold py-3 rounded-full text-center hover:bg-white/5 transition">Elegir Enterprise</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- FAQ Section -->
-        <section id="faq" class="py-24 bg-black" aria-labelledby="faq-heading">
-            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 id="faq-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                        Preguntas <span class="text-white">Frecuentes</span>
-                    </h2>
-                    <p class="text-gray-400 text-lg">
-                        Todo lo que necesitas saber sobre nuestra plataforma.
-                    </p>
-                </div>
-                
-                <div class="space-y-4">
-                    <!-- FAQ 1 -->
-                    <div class="faq-item bg-zinc-900/50 rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-white">¿Cuánto tiempo toma lanzar una campaña?</h3>
-                            <svg class="faq-icon w-6 h-6 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                        <div class="faq-answer mt-4">
-                            <p class="text-gray-400">Tu campaña se activa en 24-48 horas después de aprobar el contenido. Si necesitas diseño, añade 1-2 días adicionales.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- FAQ 2 -->
-                    <div class="faq-item bg-zinc-900/50 rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-white">¿Puedo cancelar en cualquier momento?</h3>
-                            <svg class="faq-icon w-6 h-6 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                        <div class="faq-answer mt-4">
-                            <p class="text-gray-400">Sí. No hay contratos a largo plazo. Puedes cancelar con 7 días de anticipación al final de tu ciclo de facturación.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- FAQ 3 -->
-                    <div class="faq-item bg-zinc-900/50 rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-white">¿Qué formatos de archivo aceptan?</h3>
-                            <svg class="faq-icon w-6 h-6 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                        <div class="faq-answer mt-4">
-                            <p class="text-gray-400">Video: MP4, MOV (máx 30 seg). Imágenes: JPG, PNG (1920x1080px). También aceptamos GIFs animados.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- FAQ 4 -->
-                    <div class="faq-item bg-zinc-900/50 rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-white">¿Puedo segmentar por zona geográfica?</h3>
-                            <svg class="faq-icon w-6 h-6 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                        <div class="faq-answer mt-4">
-                            <p class="text-gray-400">Sí. Puedes seleccionar taxis específicos por zona: Santiago, Santo Domingo, Punta Cana, Puerto Plata, etc.</p>
-                        </div>
-                    </div>
-                    
-                    <!-- FAQ 5 -->
-                    <div class="faq-item bg-zinc-900/50 rounded-2xl p-6 cursor-pointer" onclick="toggleFaq(this)">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-white">¿Cómo se miden los impactos?</h3>
-                            <svg class="faq-icon w-6 h-6 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                        <div class="faq-answer mt-4">
-                            <p class="text-gray-400">Cada tablet registra reproducciones completas del contenido. Estimamos 3,000 impactos/taxi/mes basado en viajes promedio.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
         <!-- Contact Form Section -->
-        <section id="contacto" class="py-24 bg-zinc-900/50" aria-labelledby="contact-heading">
+        <section id="contacto" class="py-24 bg-black" aria-labelledby="contact-heading">
             <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 id="contact-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
@@ -889,7 +434,7 @@
                 </div>
                 
                 <!-- Form -->
-                <div id="formContainer" class="bg-black/50 rounded-3xl p-8 md:p-10">
+                <div id="formContainer" class="bg-zinc-900/50 rounded-3xl p-8 md:p-10">
                     <form id="leadForm" novalidate>
                         <!-- Hidden Fields -->
                         <input type="hidden" id="formTaxis" name="taxis">
@@ -903,14 +448,14 @@
                             <div>
                                 <label for="nombre" class="block text-sm font-semibold mb-2 text-gray-300">Nombre Completo <span class="text-yellow-500">*</span></label>
                                 <input type="text" id="nombre" name="nombre" required 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
                                     placeholder="Juan Pérez"
                                     aria-required="true">
                             </div>
                             <div>
                                 <label for="empresa" class="block text-sm font-semibold mb-2 text-gray-300">Empresa</label>
                                 <input type="text" id="empresa" name="empresa" 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
                                     placeholder="Tu Empresa">
                             </div>
                         </div>
@@ -919,13 +464,13 @@
                             <div>
                                 <label for="puesto" class="block text-sm font-semibold mb-2 text-gray-300">Puesto</label>
                                 <input type="text" id="puesto" name="puesto" 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
                                     placeholder="Gerente de Marketing">
                             </div>
                             <div>
                                 <label for="telefono" class="block text-sm font-semibold mb-2 text-gray-300">Teléfono <span class="text-yellow-500">*</span></label>
                                 <input type="tel" id="telefono" name="telefono" required 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
                                     placeholder="+1 (849) 555-1234"
                                     aria-required="true"
                                     pattern="^\+?1?\s?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$">
@@ -936,14 +481,14 @@
                             <div>
                                 <label for="correo" class="block text-sm font-semibold mb-2 text-gray-300">Email Corporativo <span class="text-yellow-500">*</span></label>
                                 <input type="email" id="correo" name="correo" required 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
                                     placeholder="juan@empresa.com"
                                     aria-required="true">
                             </div>
                             <div>
                                 <label for="ciudad" class="block text-sm font-semibold mb-2 text-gray-300">Ciudad</label>
                                 <input type="text" id="ciudad" name="ciudad" 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition"
                                     placeholder="Santo Domingo">
                             </div>
                         </div>
@@ -952,7 +497,7 @@
                             <div>
                                 <label for="industria" class="block text-sm font-semibold mb-2 text-gray-300">Industria</label>
                                 <select id="industria" name="industria" 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition">
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition">
                                     <option value="">Selecciona...</option>
                                     <option value="Restaurante">Restaurante</option>
                                     <option value="Retail">Retail</option>
@@ -967,7 +512,7 @@
                             <div>
                                 <label for="presupuesto" class="block text-sm font-semibold mb-2 text-gray-300">Presupuesto</label>
                                 <select id="presupuesto" name="presupuesto" 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition">
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition">
                                     <option value="">Selecciona...</option>
                                     <option value="RD$5,000-10,000">RD$5,000-10,000</option>
                                     <option value="RD$10,000-25,000">RD$10,000-25,000</option>
@@ -981,7 +526,7 @@
                             <div>
                                 <label for="tieneAgencia" class="block text-sm font-semibold mb-2 text-gray-300">¿Tienes Agencia?</label>
                                 <select id="tieneAgencia" name="tieneAgencia" 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition">
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition">
                                     <option value="No">No</option>
                                     <option value="Si">Sí</option>
                                 </select>
@@ -989,7 +534,7 @@
                             <div>
                                 <label for="necesitaDiseno" class="block text-sm font-semibold mb-2 text-gray-300">¿Necesita Diseño?</label>
                                 <select id="necesitaDiseno" name="necesitaDiseno" 
-                                    class="w-full bg-zinc-900 border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition">
+                                    class="w-full bg-black border border-white/10 rounded-xl px-4 py-3.5 text-white focus:border-yellow-500 focus:outline-none transition">
                                     <option value="No">No</option>
                                     <option value="Si">Sí</option>
                                 </select>
@@ -1014,7 +559,7 @@
                 </div>
                 
                 <!-- Success Message -->
-                <div id="successMessage" class="hidden bg-black/50 rounded-3xl p-8 md:p-10 text-center" role="alert" aria-live="assertive">
+                <div id="successMessage" class="hidden bg-zinc-900/50 rounded-3xl p-8 md:p-10 text-center" role="alert" aria-live="assertive">
                     <div class="success-checkmark mx-auto">
                         <svg class="w-20 h-20 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -1218,23 +763,6 @@
                     mobileMenuBtn.setAttribute('aria-expanded', 'false');
                 });
             });
-        }
-        
-        // ============================================
-        // FAQ ACCORDION
-        // ============================================
-        function toggleFaq(element) {
-            const isActive = element.classList.contains('active');
-            
-            // Close all FAQs
-            document.querySelectorAll('.faq-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Open clicked if not active
-            if (!isActive) {
-                element.classList.add('active');
-            }
         }
         
         // ============================================
