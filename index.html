@@ -8,7 +8,7 @@
     <meta name="keywords" content="publicidad digital, taxis, República Dominicana, marketing, advertising, TAD" />
     
     <!-- Security Headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; connect-src 'self' https://script.google.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; connect-src 'self' https://script.google.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -730,40 +730,24 @@
                     console.log('📡 URL de Google Apps Script:', SCRIPT_URL);
 
                     // Enviar como FormData (form-urlencoded)
+                    // Usamos no-cors porque Google Apps Script no envía CORS headers correctamente
                     const response = await fetch(SCRIPT_URL, {
                         method: 'POST',
-                        mode: 'cors',
-                        body: formDataObj
+                        mode: 'no-cors',
+                        body: formDataObj,
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
                     });
                     
-                    // Leer respuesta como texto primero
-                    const responseText = await response.text();
-                    console.log('📥 Respuesta raw:', responseText);
+                    // Con no-cors, la respuesta es "opaque" (no podemos leer el cuerpo)
+                    // Pero si llegamos aquí sin error, asumimos que se envió
+                    console.log('📥 Respuesta recibida (opaque - no-cors)');
+                    console.log('✅ Asumiendo envío exitoso');
                     
-                    // Intentar parsear como JSON
-                    try {
-                        const result = JSON.parse(responseText);
-                        console.log('📥 Respuesta parseada:', result);
-                        
-                        if (result.result === 'success' || result.success) {
-                            console.log('✅ Solicitud enviada exitosamente');
-                            setRateLimit();
-                            setSubmitted(true);
-                        } else {
-                            console.error('❌ Error del servidor:', result);
-                            alert('Error al enviar. Por favor intenta de nuevo o contáctanos por WhatsApp.');
-                        }
-                    } catch (parseError) {
-                        // Si no es JSON válido, verificar status HTTP
-                        if (response.status >= 200 && response.status < 300) {
-                            console.log('⚠️ Respuesta no-JSON pero status OK, asumiendo éxito');
-                            setRateLimit();
-                            setSubmitted(true);
-                        } else {
-                            console.error('❌ Status HTTP error:', response.status);
-                            alert('Error (' + response.status + '). Intenta de nuevo o contáctanos por WhatsApp.');
-                        }
-                    }
+                    // Marcar como enviado
+                    setRateLimit();
+                    setSubmitted(true);
                     
                 } catch (error) {
                     console.error('❌ Error de red:', error);
