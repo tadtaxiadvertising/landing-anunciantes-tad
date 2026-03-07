@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Google Apps Script - TAD</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        h1 { color: #FFD700; }
+        .test-box {
+            background: #2a2a1a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        label { display: block; margin: 10px 0 5px; }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background: #333;
+            color: #fff;
+            font-family: monospace;
+        }
+        button {
+            background: #FFD700;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 5px 10px 0;
+        }
+        button:hover { background: #FFC700; }
+        .log {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff4444; }
+        .info { color: #00d4aa; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Google Apps Script - TAD</h1>
+    
+    <div class="test-box">
+        <h3>1. URL de Google Apps Script</h3>
+        <label>URL del Web App:</label>
+        <input 
+            type="text" 
+            id="scriptUrl" 
+            value="https://script.google.com/macros/s/AKfycbylHjJyXj04cPsssoqEs9v-RaVczb9wumtkOcM3kRtqKZYjw8Ta29QICEqk-uiZzISaQ/exec"
+        />
+        <p style="color: #888; font-size: 12px; margin-top: 10px;">
+            ⚠️ Esta URL puede estar desactualizada. Reemplázala con la URL actual de tu Google Apps Script.
+        </p>
+    </div>
+    
+    <div class="test-box">
+        <h3>2. Datos de Prueba</h3>
+        <label>Nombre:</label>
+        <input type="text" id="nombre" value="Juan Pérez Test" />
+        
+        <label>Empresa:</label>
+        <input type="text" id="empresa" value="Empresa Test SRL" />
+        
+        <label>Email:</label>
+        <input type="email" id="correo" value="test@empresa.com" />
+        
+        <label>Teléfono:</label>
+        <input type="tel" id="telefono" value="+18495551234" />
+        
+        <label>Taxis:</label>
+        <input type="number" id="taxis" value="10" />
+        
+        <label>Inversión Total:</label>
+        <input type="number" id="inversionTotal" value="45000" />
+    </div>
+    
+    <div class="test-box">
+        <h3>3. Test</h3>
+        <button onclick="testGet()">🔍 Test GET (básico)</button>
+        <button onclick="testPost()">📤 Test POST (formulario)</button>
+        <button onclick="clearLog()">🗑️ Limpiar Logs</button>
+    </div>
+    
+    <div class="log" id="log">Logs aparecerán aquí...\n</div>
+    
+    <script>
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'success' ? '✅' : type === 'error' ? '❌' : '🔍';
+            logEl.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').textContent = 'Logs limpiados.\n';
+        }
+        
+        async function testGet() {
+            const url = document.getElementById('scriptUrl').value;
+            log(`Iniciando test GET...`, 'info');
+            log(`URL: ${url}`, 'info');
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                log(`Status HTTP: ${response.status} ${response.statusText}`, 
+                    response.status >= 200 && response.status < 300 ? 'success' : 'error');
+                
+                const text = await response.text();
+                log(`Respuesta (${text.length} chars):`, 'info');
+                log(text.substring(0, 500), 'info');
+                
+            } catch (error) {
+                log(`ERROR: ${error.message}`, 'error');
+                log(`Posible causa: CORS, URL incorrecta, o script no desplegado`, 'error');
+            }
+        }
+        
+        async function testPost() {
+            const url = document.getElementById('scriptUrl').value;
+            log(`Iniciando test POST...`, 'info');
+            log(`URL: ${url}`, 'info');
+            
+            const formData = new FormData();
+            formData.append('nombre', document.getElementById('nombre').value);
+            formData.append('empresa', document.getElementById('empresa').value);
+            formData.append('correo', document.getElementById('correo').value);
+            formData.append('telefono', document.getElementById('telefono').value);
+            formData.append('taxis', document.getElementById('taxis').value);
+            formData.append('inversionTotal', document.getElementById('inversionTotal').value);
+            formData.append('tipo', 'anunciante');
+            formData.append('fecha', new Date().toISOString());
+            formData.append('source', 'test-page');
+            
+            log(`Datos enviados:`, 'info');
+            for (let [key, value] of formData.entries()) {
+                log(`  ${key}: ${value}`, 'info');
+            }
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: formData
+                });
+                
+                log(`Status HTTP: ${response.status} ${response.statusText}`, 
+                    response.status >= 200 && response.status < 300 ? 'success' : 'error');
+                
+                const text = await response.text();
+                log(`Respuesta raw:`, 'info');
+                log(text, 'info');
+                
+                try {
+                    const result = JSON.parse(text);
+                    log(`Respuesta parseada:`, 'info');
+                    log(JSON.stringify(result, null, 2), 'info');
+                    
+                    if (result.result === 'success' || result.success) {
+                        log('✅ ¡ÉXITO! El script está funcionando correctamente', 'success');
+                    } else {
+                        log('⚠️ Script respondió pero sin éxito', 'error');
+                    }
+                } catch (e) {
+                    log('⚠️ Respuesta no es JSON válido', 'error');
+                }
+                
+            } catch (error) {
+                log(`ERROR: ${error.message}`, 'error');
+                log(`Posible causa: CORS, URL incorrecta, o script no desplegado`, 'error');
+            }
+        }
+        
+        log('Página cargada. Ingresa la URL de tu Google Apps Script y presiona "Test GET" o "Test POST".', 'info');
+    </script>
+</body>
+</html>
