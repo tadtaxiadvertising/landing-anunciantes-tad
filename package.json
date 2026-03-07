@@ -1,0 +1,28 @@
+{
+  "name": "landing-anunciantes",
+  "version": "1.0.0",
+  "description": "Landing page profesional para generar leads de anunciantes interesados en publicidad digital en taxis.",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./dist/style.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./dist/style.css --watch",
+    "build": "npm run build:css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tadtaxiadvertising/landing-anunciantes-tad.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tadtaxiadvertising/landing-anunciantes-tad/issues"
+  },
+  "homepage": "https://github.com/tadtaxiadvertising/landing-anunciantes-tad#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^3.4.1"
+  }
+}
