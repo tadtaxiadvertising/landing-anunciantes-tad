@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAD Dominicana - Test de Conexión GAS</title>
+    <meta name="description" "Página de test para Google Apps Script webhook">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #333;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        .test-section {
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #333;
+        }
+        
+        .test-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #FFD700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-section p {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+            font-weight: 500;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFC700 100%);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: #444;
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            background: #555;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #00c853 0%, #009624 100%);
+            color: #fff;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff5252 0%, #d32f2f 100%);
+            color: #fff;
+        }
+        
+        .log-container {
+            background: #000;
+            border-radius: 6px;
+            padding: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.8;
+            border: 1px solid #333;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        
+        .log-info { color: #00bfff; }
+        .log-success { color: #00ff00; }
+        .log-warning { color: #ffeb3b; }
+        .log-error { color: #ff4444; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .status-success {
+            background: rgba(0, 200, 83, 0.2);
+            color: #00c853;
+            border: 1px solid #00c853;
+        }
+        
+        .status-error {
+            background: rgba(255, 82, 82, 0.2);
+            color: #ff5252;
+            border: 1px solid #ff5252;
+        }
+        
+        .status-pending {
+            background: rgba(255, 235, 59, 0.2);
+            color: #ffeb3b;
+            border: 1px solid #ffeb3b;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-box {
+            background: rgba(66, 133, 244, 0.1);
+            border: 1px solid #4285F4;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box h3 {
+            color: #4285F4;
+            margin-bottom: 10px;
+        }
+        
+        .info-box code {
+            background: #1a1a1a;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #FFD700;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: rgba(0, 200, 83, 0.2);
+            border: 1px solid #00c853;
+            color: #00c853;
+        }
+        
+        .alert-error {
+            background: rgba(255, 82, 82, 0.2);
+            border: 1px solid #ff5252;
+            color: #ff5252;
+        }
+        
+        .alert-warning {
+            background: rgba(255, 235, 59, 0.2);
+            border: 1px solid #ffeb3b;
+            color: #ffeb3b;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #666;
+            border-top: 1px solid #333;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 TAD Dominicana - Test de Conexión</h1>
+            <p class="subtitle">Google Apps Script Webhook Testing Suite</p>
+        </header>
+        
+        <!-- INFO BOX -->
+        <div class="info-box">
+            <h3>📋 Configuración</h3>
+            <p><strong>Webhook URL:</strong> <code id="webhookUrl">Cargando...</code></p>
+            <p><strong>Spreadsheet ID:</strong> <code>1ESGFhpY3ZWZBEJ4HB7e39ANgrZbwHjqWRS_q9RFJ-MU</code></p>
+            <p><strong>Sheet:</strong> <code>Leads</code></p>
+            <p><strong>Estado:</strong> <span id="connectionStatus" class="status-badge status-pending">Verificando...</span></p>
+        </div>
+        
+        <!-- TEST 1: GET -->
+        <div class="test-section">
+            <h2>1️⃣ Test GET - Verificar Conexión</h2>
+            <p>Verifica que el webhook esté accesible y respondiendo.</p>
+            
+            <button class="btn" onclick="testGet()">
+                Ejecutar Test GET
+            </button>
+            
+            <div id="getResults"></div>
+        </div>
+        
+        <!-- TEST 2: POST SIMPLE -->
+        <div class="test-section">
+            <h2>2️⃣ Test POST Simple - Campos Mínimos</h2>
+            <p>Envía solo los campos requeridos (nombre, correo).</p>
+            
+            <div class="grid">
+                <div class="input-group">
+                    <label for="simpleNombre">Nombre *</label>
+                    <input type="text" id="simpleNombre" value="Test Mendy">
+                </div>
+                <div class="input-group">
+                    <label for="simpleCorreo">Email *</label>
+                    <input type="email" id="simpleCorreo" value="test@tad.com">
+                </div>
+            </div>
+            
+            <button class="btn btn-success" onclick="testPostSimple()">
+                Enviar Test Simple
+            </button>
+            
+            <div id="simpleResults"></div>
+        </div>
+        
+        <!-- TEST 3: POST COMPLETO -->
+        <div class="test-section">
+            <h2>3️⃣ Test POST Completo - Todos los Campos</h2>
+            <p>Envía todos los campos como lo haría el formulario real.</p>
+            
+            <div class="grid">
+                <div class="input-group">
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" value="Juan Pérez">
+                </div>
+                <div class="input-group">
+                    <label for="empresa">Empresa</label>
+                    <input type="text" id="empresa" value="Empresa SRL">
+                </div>
+                <div class="input-group">
+                    <label for="correo">Email *</label>
+                    <input type="email" id="correo" value="juan@empresa.com">
+                </div>
+                <div class="input-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" value="+18495551234">
+                </div>
+                <div class="input-group">
+                    <label for="ciudad">Ciudad</label>
+                    <input type="text" id="ciudad" value="Santiago">
+                </div>
+                <div class="input-group">
+                    <label for="industria">Industria</label>
+                    <input type="text" id="industria" value="Restaurante">
+                </div>
+                <div class="input-group">
+                    <label for="taxis">Taxis</label>
+                    <input type="number" id="taxis" value="10">
+                </div>
+                <div class="input-group">
+                    <label for="duracion">Duración (meses)</label>
+                    <select id="duracion">
+                        <option value="1">1 mes</option>
+                        <option value="3">3 meses</option>
+                        <option value="6">6 meses</option>
+                        <option value="12" selected>12 meses</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn btn-success" onclick="testPostComplete()">
+                Enviar Test Completo
+            </button>
+            
+            <div id="completeResults"></div>
+        </div>
+        
+        <!-- LOGS -->
+        <div class="test-section">
+            <h2>📋 Logs en Tiempo Real</h2>
+            
+            <div style="margin-bottom: 15px;">
+                <button class="btn btn-secondary" onclick="clearLogs()">Limpiar Logs</button>
+                <button class="btn btn-secondary" onclick="copyLogs()">Copiar Logs</button>
+                <button class="btn btn-danger" onclick="downloadLogs()">Descargar Logs</button>
+            </div>
+            
+            <div class="log-container" id="logContainer"></div>
+        </div>
+        
+        <footer>
+            <p>TAD Dominicana - Taxi Advertising</p>
+            <p>Landing: <a href="https://landing-anunciantes-tad.vercel.app" style="color: #FFD700;">landing-anunciantes-tad.vercel.app</a></p>
+            <p>GitHub: <a href="https://github.com/tadtaxiadvertising/landing-anunciantes-tad" style="color: #FFD700;">github.com/tadtaxiadvertising/landing-anunciantes-tad</a></p>
+        </footer>
+    </div>
+    
+    <script>
+        // ============================================
+        // CONFIGURACIÓN
+        // ============================================
+        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzoXowGQhBsd99iTKIj06lRObGHyoFvVBXbn74AhPRL2mVXe3JcEbXIjbaCAuu5xBBW/exec';
+        const SPREADSHEET_ID = '1ESGFhpY3ZWZBEJ4HB7e39ANgrZbwHjqWRS_q9RFJ-MU';
+        
+        document.getElementById('webhookUrl').textContent = WEBHOOK_URL.substring(0, 50) + '...';
+        
+        // ============================================
+        // LOGGING
+        // ============================================
+        function log(message, type = 'info') {
+            const container = document.getElementById('logContainer');
+            const timestamp = new Date().toLocaleTimeString('es-DO');
+            const typeClass = 'log-' + type;
+            
+            const entry = document.createElement('div');
+            entry.className = 'log-entry ' + typeClass;
+            entry.textContent = `[${timestamp}] ${message}`;
+            
+            container.appendChild(entry);
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function clearLogs() {
+            document.getElementById('logContainer').innerHTML = '';
+            log('Logs limpiados', 'info');
+        }
+        
+        function copyLogs() {
+            const logs = document.getElementById('logContainer').innerText;
+            navigator.clipboard.writeText(logs).then(() => {
+                log('✅ Logs copiados al portapapeles', 'success');
+            });
+        }
+        
+        function downloadLogs() {
+            const logs = document.getElementById('logContainer').innerText;
+            const blob = new Blob([logs], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tad-test-logs-' + new Date().toISOString() + '.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+            log('✅ Logs descargados', 'success');
+        }
+        
+        // ============================================
+        // TEST GET
+        // ============================================
+        async function testGet() {
+            clearLogs();
+            log('🔍 Iniciando test GET...', 'info');
+            log('📡 URL: ' + WEBHOOK_URL, 'info');
+            
+            const resultsDiv = document.getElementById('getResults');
+            resultsDiv.innerHTML = '<div class="alert alert-warning"><span class="spinner"></span> Ejecutando test...</div>';
+            
+            try {
+                const startTime = Date.now();
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                const elapsed = Date.now() - startTime;
+                
+                log('📥 Status: ' + response.status, 'info');
+                log('📥 OK: ' + response.ok, 'info');
+                log('📥 Type: ' + response.type + ' (opaque es normal con no-cors)', 'info');
+                log('⏱️ Tiempo de respuesta: ' + elapsed + 'ms', 'info');
+                
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-success">
+                        ✅ <strong>Test GET Exitoso</strong><br>
+                        El webhook está accesible. Status: ${response.status}, Tiempo: ${elapsed}ms
+                    </div>
+                `;
+                
+                document.getElementById('connectionStatus').className = 'status-badge status-success';
+                document.getElementById('connectionStatus').textContent = 'Conectado';
+                
+            } catch (error) {
+                log('❌ Error: ' + error.message, 'error');
+                log('❌ Stack: ' + error.stack, 'error');
+                
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        ❌ <strong>Test GET Fallido</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+                
+                document.getElementById('connectionStatus').className = 'status-badge status-error';
+                document.getElementById('connectionStatus').textContent = 'Error';
+            }
+        }
+        
+        // ============================================
+        // TEST POST SIMPLE
+        // ============================================
+        async function testPostSimple() {
+            log('\n🔍 Iniciando test POST Simple...', 'info');
+            
+            const nombre = document.getElementById('simpleNombre').value;
+            const correo = document.getElementById('simpleCorreo').value;
+            
+            if (!nombre || !correo) {
+                log('❌ Nombre y correo son requeridos', 'error');
+                alert('Nombre y correo son requeridos');
+                return;
+            }
+            
+            const data = {
+                nombre: nombre,
+                correo: correo,
+                tipo: 'test-simple',
+                source: 'test-page',
+                fecha: new Date().toISOString()
+            };
+            
+            log('📦 Datos: ' + JSON.stringify(data, null, 2), 'info');
+            
+            const resultsDiv = document.getElementById('simpleResults');
+            resultsDiv.innerHTML = '<div class="alert alert-warning"><span class="spinner"></span> Enviando...</div>';
+            
+            try {
+                const params = new URLSearchParams();
+                for (let [key, value] of Object.entries(data)) {
+                    params.append(key, value);
+                }
+                
+                log('📤 Enviando como URLSearchParams...', 'info');
+                log('📤 Body: ' + params.toString(), 'info');
+                
+                const startTime = Date.now();
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
+                });
+                const elapsed = Date.now() - startTime;
+                
+                log('📥 Status: ' + response.status, 'info');
+                log('📥 OK: ' + response.ok, 'info');
+                log('⏱️ Tiempo: ' + elapsed + 'ms', 'info');
+                log('✅ POST Simple enviado exitosamente', 'success');
+                log('⚠️ Verifica Google Sheets manualmente', 'warning');
+                
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-success">
+                        ✅ <strong>Test POST Simple Exitoso</strong><br>
+                        Datos enviados en ${elapsed}ms. Verifica la sheet "Leads" en Google Sheets.
+                    </div>
+                `;
+                
+            } catch (error) {
+                log('❌ Error: ' + error.message, 'error');
+                log('❌ Stack: ' + error.stack, 'error');
+                
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        ❌ <strong>Test POST Simple Fallido</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // ============================================
+        // TEST POST COMPLETO
+        // ============================================
+        async function testPostComplete() {
+            log('\n🔍 Iniciando test POST Completo...', 'info');
+            
+            const data = {
+                nombre: document.getElementById('nombre').value,
+                empresa: document.getElementById('empresa').value,
+                puesto: 'Gerente',
+                telefono: document.getElementById('telefono').value,
+                correo: document.getElementById('correo').value,
+                ciudad: document.getElementById('ciudad').value,
+                industria: document.getElementById('industria').value,
+                presupuesto: 'RD$10,000-25,000',
+                tieneAgencia: 'No',
+                necesitaDiseno: 'Sí',
+                taxis: document.getElementById('taxis').value,
+                espaciosPorTaxi: '1',
+                duracion: document.getElementById('duracion').value,
+                inversionMensual: (parseInt(document.getElementById('taxis').value) * 1500).toString(),
+                inversionTotal: (parseInt(document.getElementById('taxis').value) * 1500 * parseInt(document.getElementById('duracion').value)).toString(),
+                tipo: 'test-completo',
+                source: 'test-page',
+                fecha: new Date().toISOString()
+            };
+            
+            log('📦 Datos completos: ' + JSON.stringify(data, null, 2), 'info');
+            
+            const resultsDiv = document.getElementById('completeResults');
+            resultsDiv.innerHTML = '<div class="alert alert-warning"><span class="spinner"></span> Enviando...</div>';
+            
+            try {
+                const params = new URLSearchParams();
+                for (let [key, value] of Object.entries(data)) {
+                    params.append(key, value);
+                }
+                
+                log('📤 Enviando ' + Object.keys(data).length + ' campos...', 'info');
+                
+                const startTime = Date.now();
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
+                });
+                const elapsed = Date.now() - startTime;
+                
+                log('📥 Status: ' + response.status, 'info');
+                log('✅ POST Completo enviado en ' + elapsed + 'ms', 'success');
+                log('⚠️ Deberías recibir un email de notificación', 'info');
+                log('⚠️ Verifica Google Sheets - 19 columnas esperadas', 'warning');
+                
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-success">
+                        ✅ <strong>Test POST Completo Exitoso</strong><br>
+                        ${Object.keys(data).length} campos enviados en ${elapsed}ms.<br>
+                        <strong>Verifica:</strong>
+                        <ul style="margin-top: 10px; margin-left: 20px;">
+                            <li>Google Sheets → Sheet "Leads" → Nueva fila con 19 columnas</li>
+                            <li>Email de notificación en tad.taxiadvertising@gmail.com</li>
+                        </ul>
+                    </div>
+                `;
+                
+            } catch (error) {
+                log('❌ Error: ' + error.message, 'error');
+                log('❌ Stack: ' + error.stack, 'error');
+                
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        ❌ <strong>Test POST Completo Fallido</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+        
+        // ============================================
+        // AUTO-TEST ON LOAD
+        // ============================================
+        window.onload = function() {
+            log('🚀 Página de test cargada', 'success');
+            log('📡 Webhook URL: ' + WEBHOOK_URL, 'info');
+            log('📊 Spreadsheet ID: ' + SPREADSHEET_ID, 'info');
+            log('👆 Click en "Ejecutar Test GET" para comenzar', 'info');
+            
+            // Auto-run GET test
+            setTimeout(() => {
+                log('⏳ Auto-ejecutando test GET en 2 segundos...', 'info');
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
