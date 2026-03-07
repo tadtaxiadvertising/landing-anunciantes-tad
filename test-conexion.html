@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST - Google Apps Script</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .log {
+            background: #000;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff4444; }
+        .info { color: #00bfff; }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            background: #333;
+            border: 1px solid #555;
+            color: white;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 TEST - Google Apps Script Connection</h1>
+    
+    <div class="test-section">
+        <h2>1. Verificar URL del Script</h2>
+        <input type="text" id="scriptUrl" value="https://script.google.com/macros/s/AKfycbzoXowGQhBsd99iTKIj06lRObGHyoFvVBXbn74AhPRL2mVXe3JcEbXIjbaCAuu5xBBW/exec" readonly>
+        <button onclick="testGet()">Test GET</button>
+        <button onclick="copyUrl()">Copiar URL</button>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test POST con Datos Simples</h2>
+        <input type="text" id="testNombre" placeholder="Nombre" value="Test Mendy">
+        <input type="email" id="testCorreo" placeholder="Email" value="test@tad.com">
+        <input type="text" id="testEmpresa" placeholder="Empresa" value="TAD Test">
+        <button onclick="testPostSimple()">Test POST Simple</button>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Test POST con Todos los Campos</h2>
+        <button onclick="testPostComplete()">Test POST Completo</button>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Logs</h2>
+        <button onclick="clearLogs()">Limpiar Logs</button>
+        <button onclick="copyLogs()">Copiar Logs</button>
+        <div class="log" id="log"></div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = document.getElementById('scriptUrl').value;
+        
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            logDiv.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        function copyLogs() {
+            const logs = document.getElementById('log').innerText;
+            navigator.clipboard.writeText(logs);
+            log('✅ Logs copiados al portapapeles', 'success');
+        }
+
+        function copyUrl() {
+            navigator.clipboard.writeText(SCRIPT_URL);
+            log('✅ URL copiada al portapapeles', 'success');
+        }
+
+        async function testGet() {
+            clearLogs();
+            log('🔍 Iniciando test GET...', 'info');
+            log(`📡 URL: ${SCRIPT_URL}`, 'info');
+            
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+                
+                log(`📥 Status: ${response.status}`, 'info');
+                log(`📥 OK: ${response.ok}`, 'info');
+                log(`⚠️ Con no-cors, la respuesta es "opaque" - no podemos leer el cuerpo`, 'info');
+                log(`✅ Si no hay error de red, el script está accesible`, 'success');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                log(`❌ Stack: ${error.stack}`, 'error');
+            }
+        }
+
+        async function testPostSimple() {
+            log('\n🔍 Iniciando test POST Simple...', 'info');
+            
+            const data = {
+                nombre: document.getElementById('testNombre').value,
+                correo: document.getElementById('testCorreo').value,
+                empresa: document.getElementById('testEmpresa').value,
+                tipo: 'test',
+                fecha: new Date().toISOString()
+            };
+            
+            log(`📦 Datos: ${JSON.stringify(data, null, 2)}`, 'info');
+            
+            try {
+                // Método 1: URLSearchParams
+                const params = new URLSearchParams();
+                for (let [key, value] of Object.entries(data)) {
+                    params.append(key, value);
+                }
+                
+                log(`📤 Enviando como URLSearchParams...`, 'info');
+                log(`📤 Body: ${params.toString()}`, 'info');
+                
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
+                });
+                
+                log(`📥 Status: ${response.status}`, 'info');
+                log(`📥 OK: ${response.ok}`, 'info');
+                log(`✅ POST enviado (no-cors - no podemos verificar respuesta)`, 'success');
+                log(`⚠️ Verifica Google Sheets manualmente`, 'info');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                log(`❌ Stack: ${error.stack}`, 'error');
+            }
+        }
+
+        async function testPostComplete() {
+            log('\n🔍 Iniciando test POST Completo...', 'info');
+            
+            const data = {
+                nombre: 'Test Mendy',
+                empresa: 'TAD Dominicana',
+                puesto: 'Gerente',
+                telefono: '+18495043872',
+                correo: 'test@tad.com',
+                ciudad: 'Santiago',
+                industria: 'Publicidad',
+                presupuesto: 'RD$10,000-25,000',
+                tieneAgencia: 'No',
+                necesitaDiseno: 'Sí',
+                taxis: '10',
+                espaciosPorTaxi: '1',
+                duracion: '3',
+                inversionMensual: '15000',
+                inversionTotal: '45000',
+                tipo: 'test-completo',
+                source: 'test-page',
+                fecha: new Date().toISOString()
+            };
+            
+            log(`📦 Datos completos: ${JSON.stringify(data, null, 2)}`, 'info');
+            
+            try {
+                const params = new URLSearchParams();
+                for (let [key, value] of Object.entries(data)) {
+                    params.append(key, value);
+                }
+                
+                log(`📤 Enviando ${Object.keys(data).length} campos...`, 'info');
+                
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
+                });
+                
+                log(`📥 Status: ${response.status}`, 'info');
+                log(`✅ POST completo enviado`, 'success');
+                log(`⚠️ Verifica Google Sheets - debería llegar una fila con 19 columnas`, 'info');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                log(`❌ Stack: ${error.stack}`, 'error');
+            }
+        }
+
+        // Auto-run test GET on load
+        window.onload = () => {
+            log('🚀 Página de test cargada', 'success');
+            log(`📡 Script URL: ${SCRIPT_URL}`, 'info');
+            log('👆 Click en "Test GET" para verificar conexión', 'info');
+        };
+    </script>
+</body>
+</html>
