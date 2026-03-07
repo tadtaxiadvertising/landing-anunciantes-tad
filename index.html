@@ -86,7 +86,40 @@
         }
         .calc-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.1);
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.15);
+        }
+        
+        /* Number Animation */
+        .number-animate {
+            transition: opacity 0.2s ease;
+        }
+        .number-updating {
+            opacity: 0.5;
+        }
+        
+        /* Slider Thumb */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #FFD700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+            transition: transform 0.2s;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        input[type=range]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #FFD700;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
         }
     </style>
 </head>
@@ -537,8 +570,41 @@
         const formInversionTotal = document.getElementById('formInversionTotal');
         
         // ============================================
+        // ANIMATED NUMBER COUNTER
+        // ============================================
+        function animateNumber(element, start, end, duration = 500) {
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease out quart
+                const ease = 1 - Math.pow(1 - progress, 4);
+                const current = Math.round(start + (end - start) * ease);
+                
+                element.textContent = current.toLocaleString();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+        
+        // ============================================
+        // FORMAT CURRENCY
+        // ============================================
+        function formatCurrency(amount) {
+            return 'RD$ ' + Math.round(amount).toLocaleString();
+        }
+        
+        // ============================================
         // CALCULADORA - LOGICA
         // ============================================
+        let lastValues = { monthly: 0, total: 0, impact: 0 };
+        
         function updateCalculator() {
             const taxis = parseInt(taxisRange.value);
             const spaces = parseInt(spacesSelect.value);
@@ -558,11 +624,33 @@
             
             const impact = taxis * spaces * IMPACTS_PER_TAXI;
             
-            // Update UI
-            monthlyInvestment.textContent = 'RD$ ' + monthly.toLocaleString();
+            // Animate numbers if changed significantly
+            if (Math.abs(monthly - lastValues.monthly) > 100) {
+                monthlyInvestment.classList.add('number-updating');
+                animateNumber(monthlyInvestment, lastValues.monthly, monthly, 400);
+                setTimeout(() => monthlyInvestment.classList.remove('number-updating'), 400);
+            } else {
+                monthlyInvestment.textContent = formatCurrency(monthly);
+            }
+            
+            if (Math.abs(total - lastValues.total) > 100) {
+                totalInvestment.classList.add('number-updating');
+                animateNumber(totalInvestment, lastValues.total, Math.round(total), 400);
+                setTimeout(() => totalInvestment.classList.remove('number-updating'), 400);
+            } else {
+                totalInvestment.textContent = formatCurrency(total);
+            }
+            
+            if (Math.abs(impact - lastValues.impact) > 1000) {
+                monthlyImpact.classList.add('number-updating');
+                animateNumber(monthlyImpact, lastValues.impact, impact, 400);
+                setTimeout(() => monthlyImpact.classList.remove('number-updating'), 400);
+            } else {
+                monthlyImpact.textContent = impact.toLocaleString();
+            }
+            
+            // Update duration (no animation needed)
             durationDisplay.textContent = duration + (duration === 1 ? ' mes' : ' meses');
-            totalInvestment.textContent = 'RD$ ' + Math.round(total).toLocaleString();
-            monthlyImpact.textContent = impact.toLocaleString();
             
             // Update hidden form fields (CRITICAL - ensures values are sent)
             formTaxis.value = taxis;
@@ -570,6 +658,9 @@
             formDuracion.value = duration;
             formInversionMensual.value = monthly;
             formInversionTotal.value = Math.round(total);
+            
+            // Store last values for animation
+            lastValues = { monthly, total: Math.round(total), impact };
             
             console.log('🧮 Calculator updated:', {
                 taxis, spaces, duration, monthly, total: Math.round(total), impact
